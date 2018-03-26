@@ -1,0 +1,16 @@
+<% if @errors.present? %>
+<div class="errors">
+	<ul>
+		<% @errors.each do |error| %>
+		<li> <%= error %> </li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+
+<p>
+<%= form_tag(decisionroom_decisionmaker_index_path(decisionroom_id: @decisionroom.id), method: "post") do %>
+	<%= label_tag(:email, "EMail of the Decision Maker") %> 
+	<%= text_field_tag(:email) %>
+	<%= submit_tag("Add Decisionmaker") %>
+<% end %>

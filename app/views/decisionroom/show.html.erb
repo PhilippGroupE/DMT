@@ -1,0 +1,13 @@
+<h1>Decisionroom#show</h1>
+<p>Find me in app/views/decisionroom/show.html.erb</p>
+
+<h1><%= @decisionroom.name %> </h1>
+<div>
+<ul class="Decisionmaker_actions">
+	<li> <%= link_to "Add Decisionmakers", new_decisionroom_decisionmaker_path(decisionroom_id: @decisionroom.id) %></li>
+	<li> <%= link_to "See Decisionmakers", decisionroom_decisionmaker_index_path(decisionroom_id: @decisionroom.id) %></li>
+</ul>
+<ul class="Decisionroom_actions">
+	<li> <%= link_to "Back", decisionroom_index_path %> </li>
+</ul>
+</div>

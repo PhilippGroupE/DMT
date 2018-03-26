@@ -1,0 +1,13 @@
+<h1>Decisionroom#index</h1>
+<p>Find me in app/views/decisionroom/index.html.erb</p>
+
+<div> 
+	<%= link_to "New Decisionroom", new_decisionroom_path %>
+</div>
+
+	<% @decisionroom.each do |d| %>
+	<div class="decisions">
+		<%= link_to d.name, decisionroom_path(d) %>
+	</div>
+
+	<% end %>
