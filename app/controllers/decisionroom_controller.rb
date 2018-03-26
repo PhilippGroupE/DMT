@@ -16,6 +16,7 @@ class DecisionroomController < ApplicationController
   def create
     @decisionroom = current_user.decisionrooms.build(decisionroom_params)
     @decisionroom.users << current_user
+    @decisionroom.creator = current_user
     if @decisionroom.save
       redirect_to decisionroom_path(@decisionroom), notice: "Decisionroom created!"
     
@@ -56,7 +57,10 @@ class DecisionroomController < ApplicationController
   def update
   end
 
-  def delete
+  def destroy
+    @decisionroom = Decisionroom.find(params[:id])
+    @decisionroom.destroy
+    redirect_to decisionroom_index_path, notice: "Decisionroom deleted!"
   end
 
   def decisionroom_params

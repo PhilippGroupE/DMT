@@ -5,5 +5,6 @@ class CreateUserDecisionrooms < ActiveRecord::Migration[5.1]
       t.belongs_to :decisionroom, index:true
       t.timestamps
     end
+    add_index :user_decisionrooms, [:user_id, :decisionroom_id], unique: true
   end
 end

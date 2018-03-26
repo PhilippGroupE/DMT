@@ -1,8 +1,8 @@
 class DecisionmakerController < ApplicationController
 
   def index
-  	decisionroom = Decisionroom.find(params[:decisionroom_id])
-    @decisionmaker = decisionroom.users.all.uniq
+  	@decisionroom = Decisionroom.find(params[:decisionroom_id])
+    @decisionmaker = @decisionroom.users.all
   end
 
   def new
@@ -16,7 +16,10 @@ class DecisionmakerController < ApplicationController
     if @decisionmaker.nil?
       redirect_to new_decisionroom_decisionmaker_path(@decisionroom), notice: "Decision Maker does not exist. Please choose another one!"
     else
-      @decisionroom.users << @decisionmaker
+      begin
+        @decisionroom.users << @decisionmaker
+      rescue ActiveRecord::RecordNotUnique
+      end
       redirect_to decisionroom_path(@decisionroom), notice: "User added!"
     end
   end

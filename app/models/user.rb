@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
+  has_many :tables
   has_many :user_decisionrooms
   has_many :decisionrooms, through: :user_decisionrooms
 end
