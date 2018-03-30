@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180326103511) do
+ActiveRecord::Schema.define(version: 20180329100906) do
+
+  create_table "alternatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "decisionroom_id"
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decisionroom_id"], name: "index_alternatives_on_decisionroom_id"
+  end
 
   create_table "decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -22,7 +31,6 @@ ActiveRecord::Schema.define(version: 20180326103511) do
   create_table "tables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.bigint "decisionroom_id"
-    t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["decisionroom_id"], name: "index_tables_on_decisionroom_id"
@@ -57,4 +65,5 @@ ActiveRecord::Schema.define(version: 20180326103511) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "alternatives", "decisionrooms"
 end

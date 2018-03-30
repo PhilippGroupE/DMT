@@ -8,15 +8,18 @@
 </div>
 <% end %>
 
-<%= form_for @decisionroom, url: {action: "create"}, html: {class: "nifty_form"} do |form| %>
-
-<div class="form-group">
-	<%= form.label :name %>
-	<%= form.text_field :name %>
+<%= simple_form_for @decisionroom, url: {action: "create"} do |f| %>
+	<%= f.input :name %>
+<div class="Alternatives">
+	<h3> Alternatives </h3>
+	<%= f.simple_fields_for :alternatives do |alternative| %>
+		<%= render 'alternative_fields', f: alternative %>
+		<% end %>
 </div>
-
-<div class="actions">
-	<%= form.submit %>
-</div>
-
+		<div class="links">
+		<%= link_to_add_association 'Add Alternative', f, :alternatives %>
+		</div>
+		<%= f.submit %>
 <% end %>
+
+

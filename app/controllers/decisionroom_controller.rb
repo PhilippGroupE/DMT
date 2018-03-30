@@ -11,6 +11,7 @@ class DecisionroomController < ApplicationController
 
   def new
     @decisionroom = current_user.decisionrooms.build
+    @alternative = @decisionroom.alternatives.build
   end
 
   def create
@@ -64,7 +65,7 @@ class DecisionroomController < ApplicationController
   end
 
   def decisionroom_params
-    params.require(:decisionroom).permit(:name)
+    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description])
   end
 
 end
