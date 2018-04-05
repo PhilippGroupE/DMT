@@ -4,18 +4,66 @@
 <h1><%= @decisionroom.name %> </h1>
 <h4>Created by <%= @decisionroom.creator.email %> </h4>
 <div>
+
+<h3> Alternatives</h3>
+<table class="Alternatives_show">
+	<tr>
+		<th>No.</th>
+		<th>Name</th>
+		<th>Description</th>
+	</tr>
+
+	<% $i = 0 %>
+	<% @decisionroom.alternatives.each do |alternative| %>
+	<% $i += 1 %>
+	<tr>
+		<td><%= $i %></td>
+		<td><%= alternative.name %></td>
+		<td><%= alternative.description %></td>
+	</tr>
+	<% end %>
+</table>
+
+
+<h3> Criterions </h3>
+<table class="Criterions_show">
+	<tr>
+		<th>No.</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th>Weight</th>
+	</tr>
+
+	<% $j = 0 %>
+	<% @decisionroom.criterions.each do |criterion| %>
+	<% $j += 1 %>
+	<tr>
+		<td><%= $j %></td>
+		<td><%= criterion.name %></td>
+		<td><%= criterion.description %></td>
+		<td><%= criterion.weight %></td>
+	</tr>
+	<% end %>
+</table>
+
+
 <p class="Decisiontable-actions">
 Decisiontable-Actions: </br>
-	<%= link_to "Create Decisiontable", new_decisionroom_table_path(decisionroom_id: @decisionroom.id) %>
+	<%= link_to "Vote!", new_decisionroom_vote_path(decisionroom_id: @decisionroom.id) %>
 </p>
 <p class="Decisionmaker_actions">
-Decisionmaker-Actions: </br>
+	<% if @decisionroom.creator.email == current_user.email then %>
+	Decisionmaker-Actions: </br>
 	<%= link_to "Add Decisionmakers", new_decisionroom_decisionmaker_path(decisionroom_id: @decisionroom.id) %> |
 	<%= link_to "See Decisionmakers", decisionroom_decisionmaker_index_path(decisionroom_id: @decisionroom.id) %>
+	<% end %>
 </p>
 <p class="Decisionroom_actions">
 Decisionroom-Actions: </br>
-	<%= link_to "Delete", decisionroom_path, confirm: "Are you sure?", method: :delete %> |
+		<% if @decisionroom.creator.email == current_user.email then %>
+		<%= link_to "Delete", decisionroom_path, confirm: "Are you sure?", method: :delete %> |
+		<%= link_to "Edit", edit_decisionroom_path(decisionroom_id: @decisionroom.id) %> |
+		<% end %>
 	<%= link_to "Back", decisionroom_index_path %>
 </p>
 </div>

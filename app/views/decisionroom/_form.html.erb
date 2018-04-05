@@ -7,7 +7,6 @@
 	</ul>
 </div>
 <% end %>
-
 <%= simple_form_for @decisionroom, url: {action: "create"} do |f| %>
 	<%= f.input :name %>
 <div class="Alternatives">
@@ -18,6 +17,15 @@
 </div>
 		<div class="links">
 		<%= link_to_add_association 'Add Alternative', f, :alternatives %>
+		</div>
+<div class="Criterions">
+	<h3> Criterions </h3>
+	<%= f.simple_fields_for :criterions do |criterion| %>
+		<%= render 'criterion_fields', f: criterion %>
+		<% end %>
+</div>
+		<div class="links">
+		<%= link_to_add_association 'Add Criterion', f, :criterions %>
 		</div>
 		<%= f.submit %>
 <% end %>

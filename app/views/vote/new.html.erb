@@ -1,0 +1,20 @@
+<h1>Vote#new</h1>
+<p>Find me in app/views/vote/new.html.erb</p>
+
+<table>
+	<tr>
+		<th> Criterions </th>
+		<% @decisionroom.alternatives.each do |alternative| %>
+		<th> <%= alternative.name %> </th>
+		<% end %>
+	</tr>
+	<% @decisionroom.criterions.each do |criterion| %>
+	<tr>
+		<td> <%= criterion.name %></td>
+	</tr>
+	<% end %>
+</table>
+
+<div class="links">
+	<%= link_to "Back", decisionroom_path(@decisionroom) %>
+</div>

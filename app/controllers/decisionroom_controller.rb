@@ -11,7 +11,6 @@ class DecisionroomController < ApplicationController
 
   def new
     @decisionroom = current_user.decisionrooms.build
-    @alternative = @decisionroom.alternatives.build
   end
 
   def create
@@ -26,6 +25,22 @@ class DecisionroomController < ApplicationController
       render:new
     end
 
+  end
+
+  def edit
+    @decisionroom = Decisionroom.find(params[:decisionroom_id])
+  end
+
+  def update
+    @decisionroom = Decisionroom.find(params[:decisionroom_id])
+    if @decisionroom.save
+      redirect_to decisionroom_path(@decisionroom), notice: "Decisionroom created!"
+    
+    else
+      @errors = @decisionroom.errors.full_messages
+      render:new
+    end
+    
   end
 
   def index_decisionmaker
@@ -55,9 +70,6 @@ class DecisionroomController < ApplicationController
     end  
   end
 
-  def update
-  end
-
   def destroy
     @decisionroom = Decisionroom.find(params[:id])
     @decisionroom.destroy
@@ -65,7 +77,7 @@ class DecisionroomController < ApplicationController
   end
 
   def decisionroom_params
-    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description])
+    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description], criterions_attributes: [:id, :_destroy, :name, :description, :weight])
   end
 
 end

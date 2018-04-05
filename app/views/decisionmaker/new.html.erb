@@ -2,7 +2,11 @@
 <p>Find me in app/views/decisionmaker/new.html.erb</p>
 
 <p>
-Please insert decision makers for your decision room "<%= @decisionroom %>". 
+Please insert decision makers for your Decisionroom "<%= @decisionroom.name %>". 
 </p>
 
 <%= render partial: "form"%>
+
+<div class="links">
+	<%= link_to "Back", decisionroom_path(@decisionroom) %>
+</div>

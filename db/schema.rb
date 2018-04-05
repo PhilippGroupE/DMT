@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180329100906) do
+ActiveRecord::Schema.define(version: 20180330121627) do
 
   create_table "alternatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "decisionroom_id"
@@ -21,21 +21,21 @@ ActiveRecord::Schema.define(version: 20180329100906) do
     t.index ["decisionroom_id"], name: "index_alternatives_on_decisionroom_id"
   end
 
+  create_table "criterions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "decisionroom_id"
+    t.string "name"
+    t.string "description"
+    t.float "weight", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decisionroom_id"], name: "index_criterions_on_decisionroom_id"
+  end
+
   create_table "decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "tables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "user_id"
-    t.bigint "decisionroom_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["decisionroom_id"], name: "index_tables_on_decisionroom_id"
-    t.index ["user_id", "decisionroom_id"], name: "index_tables_on_user_id_and_decisionroom_id", unique: true
-    t.index ["user_id"], name: "index_tables_on_user_id"
   end
 
   create_table "user_decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -65,5 +65,18 @@ ActiveRecord::Schema.define(version: 20180329100906) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "votes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "decisionroom_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decisionroom_id"], name: "index_votes_on_decisionroom_id"
+    t.index ["user_id", "decisionroom_id"], name: "index_votes_on_user_id_and_decisionroom_id", unique: true
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
   add_foreign_key "alternatives", "decisionrooms"
+  add_foreign_key "criterions", "decisionrooms"
+  add_foreign_key "votes", "decisionrooms"
+  add_foreign_key "votes", "users"
 end
