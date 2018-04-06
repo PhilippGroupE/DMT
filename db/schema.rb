@@ -68,15 +68,22 @@ ActiveRecord::Schema.define(version: 20180330121627) do
   create_table "votes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.bigint "decisionroom_id"
+    t.bigint "alternative_id"
+    t.bigint "criterion_id"
+    t.float "value", limit: 24
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["alternative_id"], name: "index_votes_on_alternative_id"
+    t.index ["criterion_id"], name: "index_votes_on_criterion_id"
     t.index ["decisionroom_id"], name: "index_votes_on_decisionroom_id"
-    t.index ["user_id", "decisionroom_id"], name: "index_votes_on_user_id_and_decisionroom_id", unique: true
+    t.index ["user_id", "alternative_id", "criterion_id"], name: "index_votes_on_user_id_and_alternative_id_and_criterion_id", unique: true
     t.index ["user_id"], name: "index_votes_on_user_id"
   end
 
   add_foreign_key "alternatives", "decisionrooms"
   add_foreign_key "criterions", "decisionrooms"
+  add_foreign_key "votes", "alternatives"
+  add_foreign_key "votes", "criterions"
   add_foreign_key "votes", "decisionrooms"
   add_foreign_key "votes", "users"
 end

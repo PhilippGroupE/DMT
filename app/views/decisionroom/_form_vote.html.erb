@@ -1,0 +1,37 @@
+<% if @errors.present? %>
+<div class="errors">
+	<ul>
+		<% @errors.each do |error| %>
+		<li> <%= error %> </li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+<%= current_user.id %>
+<%= form_for @decisionroom do |f| %>
+<table>
+	<tr>
+		<th> Criterions </th>
+		<th> Weight </th>
+		<% @decisionroom.alternatives.each do |alternative| %>
+			<th> <%= alternative.name %> </th>
+			<% @ary.push(alternative.id) %>
+		<% end %>
+	</tr>
+	<% @decisionroom.criterions.each do |criterion| %>
+	<tr>
+		<td> <%= criterion.name %></td> 
+		<td> <%= criterion.weight %></td>
+		<% $i = 0 %>
+		<%= f.fields_for :votes, [Vote.new]*@ary.count do |vote| %>
+			<%= vote.hidden_field :alternative_id, :value => @ary[$i] %>
+			<%= vote.hidden_field :criterion_id, :value => criterion.id %>
+			<%= vote.hidden_field :user_id, :value => current_user.id %>
+			<td> <%= vote.number_field :value %> <td>
+		<% $i += 1 %>
+		<% end %> 
+	</tr>
+	<% end %>
+</table>
+	<%= f.submit "Add Votes" %>
+<%end%>

@@ -7,10 +7,16 @@ class DecisionroomController < ApplicationController
 
   def show
     @decisionroom = current_user.decisionrooms.find(params[:id])
+    @ary = Array.new
   end
 
   def new
     @decisionroom = current_user.decisionrooms.build
+  end
+
+  def new_votes
+    @decisionroom = Decisionroom.find(params[:decisionroom_id])
+    @ary = Array.new
   end
 
   def create
@@ -18,7 +24,7 @@ class DecisionroomController < ApplicationController
     @decisionroom.users << current_user
     @decisionroom.creator = current_user
     if @decisionroom.save
-      redirect_to decisionroom_path(@decisionroom), notice: "Decisionroom created!"
+      redirect_to decisionroom_new_votes_path(@decisionroom), notice: "Decisionroom created - Please insert your votes!"
     
     else
       @errors = @decisionroom.errors.full_messages
@@ -32,10 +38,10 @@ class DecisionroomController < ApplicationController
   end
 
   def update
-    @decisionroom = Decisionroom.find(params[:decisionroom_id])
+    @decisionroom = Decisionroom.find(params[:id])
+    @decisionroom.update_attributes(decisionroom_params)
     if @decisionroom.save
       redirect_to decisionroom_path(@decisionroom), notice: "Decisionroom created!"
-    
     else
       @errors = @decisionroom.errors.full_messages
       render:new
@@ -77,7 +83,7 @@ class DecisionroomController < ApplicationController
   end
 
   def decisionroom_params
-    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description], criterions_attributes: [:id, :_destroy, :name, :description, :weight])
+    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description], criterions_attributes: [:id, :_destroy, :name, :description, :weight], votes_attributes: [:id, :_destroy, :alternative_id, :criterion_id, :user_id, :value])
   end
 
 end

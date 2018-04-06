@@ -46,10 +46,50 @@
 	<% end %>
 </table>
 
+<h3> Votes </h3>
+<table>
+	<tr>
+		<th>
+			Criterion
+		</th>
+		<th>
+			Weight
+		</th>
+		<% @decisionroom.alternatives.each do |alternative| %>
+		<th>
+			<%= alternative.name %>
+		</th>
+		<% end %>
+	</tr>
+	<% @decisionroom.criterions.each do |criterion| %>
+	<tr>
+		<td>
+			<%= criterion.name %>
+		</td>
+		<td>
+			<%= criterion.weight %>
+		</td>
+		<% @decisionroom.alternatives.each do |alt| %>
+		<td>
+			<%= Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id).value %>
+		</td>
+		<% end %>
+	</tr>
+	<% $i += 1 %>
+	<% end %>
+</table>
+
+
+
+
 
 <p class="Decisiontable-actions">
 Decisiontable-Actions: </br>
-	<%= link_to "Vote!", new_decisionroom_vote_path(decisionroom_id: @decisionroom.id) %>
+	<% if @decisionroom.creator.email == current_user.email then %>
+	<%= link_to "Change your Votes!", decisionroom_new_votes_path(decisionroom_id: @decisionroom.id) %>
+	<% else %>
+	<%= link_to "Vote!", decisionroom_new_votes_path(decisionroom_id: @decisionroom.id) %>
+	<% end %>
 </p>
 <p class="Decisionmaker_actions">
 	<% if @decisionroom.creator.email == current_user.email then %>

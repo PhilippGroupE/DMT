@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: "welcome#index"
   devise_for :users
   resources :decisionroom do
+  	  get 'new_votes'
   	  resources :decisionmaker
       resources :vote
   	end
