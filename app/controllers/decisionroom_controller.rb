@@ -51,7 +51,9 @@ class DecisionroomController < ApplicationController
     end
 
     #Determining the sum of the alternatives
-
+    @decisionroom.alternatives.each do |alternative|
+      WeightedSum.calculate_sum(alternative.id,current_user.id)
+    end
 
     # Save Conditions
     if @decisionroom.save

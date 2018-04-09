@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180407093041) do
+ActiveRecord::Schema.define(version: 20180409105636) do
 
   create_table "alternatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "decisionroom_id"
@@ -92,6 +92,16 @@ ActiveRecord::Schema.define(version: 20180407093041) do
     t.index ["user_id"], name: "index_votes_results_on_user_id"
   end
 
+  create_table "weighted_sums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "alternative_id"
+    t.float "sum", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alternative_id"], name: "index_weighted_sums_on_alternative_id"
+    t.index ["user_id"], name: "index_weighted_sums_on_user_id"
+  end
+
   add_foreign_key "alternatives", "decisionrooms"
   add_foreign_key "criterions", "decisionrooms"
   add_foreign_key "votes", "alternatives"
@@ -101,4 +111,6 @@ ActiveRecord::Schema.define(version: 20180407093041) do
   add_foreign_key "votes_results", "alternatives"
   add_foreign_key "votes_results", "decisionrooms"
   add_foreign_key "votes_results", "users"
+  add_foreign_key "weighted_sums", "alternatives"
+  add_foreign_key "weighted_sums", "users"
 end
