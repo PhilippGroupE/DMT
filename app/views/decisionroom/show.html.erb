@@ -71,7 +71,11 @@
 		</td>
 		<% @decisionroom.alternatives.each do |alt| %>
 		<td>
+			<% if Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id) then %>
 			<%= Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id).value %>
+			<% else %>
+			<%= "-" %>
+			<% end %>
 		</td>
 		<% end %>
 	</tr>
@@ -79,7 +83,42 @@
 	<% end %>
 </table>
 
-
+<h3> Votes Weighted </h3>
+<table>
+	<tr>
+		<th>
+			Criterion
+		</th>
+		<th>
+			Weight
+		</th>
+		<% @decisionroom.alternatives.each do |alternative| %>
+		<th>
+			<%= alternative.name %>
+		</th>
+		<% end %>
+	</tr>
+	<% @decisionroom.criterions.each do |criterion| %>
+	<tr>
+		<td>
+			<%= criterion.name %>
+		</td>
+		<td>
+			<%= criterion.weight %>
+		</td>
+		<% @decisionroom.alternatives.each do |alt| %>
+		<td>
+			<% if Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id) then %>
+			<%= Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id).value_weighted %>
+			<% else %>
+			<%= "-" %>
+			<% end %>
+		</td>
+		<% end %>
+	</tr>
+	<% $i += 1 %>
+	<% end %>
+</table>
 
 
 

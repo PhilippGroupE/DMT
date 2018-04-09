@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180330121627) do
+ActiveRecord::Schema.define(version: 20180407093041) do
 
   create_table "alternatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "decisionroom_id"
@@ -71,13 +71,25 @@ ActiveRecord::Schema.define(version: 20180330121627) do
     t.bigint "alternative_id"
     t.bigint "criterion_id"
     t.float "value", limit: 24
+    t.float "value_weighted", limit: 24
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alternative_id"], name: "index_votes_on_alternative_id"
     t.index ["criterion_id"], name: "index_votes_on_criterion_id"
     t.index ["decisionroom_id"], name: "index_votes_on_decisionroom_id"
-    t.index ["user_id", "alternative_id", "criterion_id"], name: "index_votes_on_user_id_and_alternative_id_and_criterion_id", unique: true
     t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
+  create_table "votes_results", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.float "sum", limit: 24
+    t.bigint "decisionroom_id"
+    t.bigint "user_id"
+    t.bigint "alternative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alternative_id"], name: "index_votes_results_on_alternative_id"
+    t.index ["decisionroom_id"], name: "index_votes_results_on_decisionroom_id"
+    t.index ["user_id"], name: "index_votes_results_on_user_id"
   end
 
   add_foreign_key "alternatives", "decisionrooms"
@@ -86,4 +98,7 @@ ActiveRecord::Schema.define(version: 20180330121627) do
   add_foreign_key "votes", "criterions"
   add_foreign_key "votes", "decisionrooms"
   add_foreign_key "votes", "users"
+  add_foreign_key "votes_results", "alternatives"
+  add_foreign_key "votes_results", "decisionrooms"
+  add_foreign_key "votes_results", "users"
 end
