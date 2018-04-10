@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20180410121444) do
   create_table "decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.integer "creator_id"
+    t.boolean "has_outcome"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

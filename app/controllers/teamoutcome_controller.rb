@@ -25,6 +25,8 @@ class TeamoutcomeController < ApplicationController
 			sum = Teamoutcome.where(alternative_id: alternative.id, decisionroom_id: decisionroom.id).sum(:average_value)
 			TeamoutcomeSum.create(alternative_id: alternative.id, decisionroom_id: decisionroom.id, outcome_sum: sum)
 		end
+
+		decisionroom.update_attributes(has_outcome: true)
 	end
 
 	def index

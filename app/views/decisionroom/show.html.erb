@@ -1,16 +1,13 @@
-<h1>Decisionroom#show</h1>
-<p>Find me in app/views/decisionroom/show.html.erb</p>
-
-<h1><%= @decisionroom.name %> </h1>
+<h2><%= @decisionroom.name %> </h2>
 <h4>Created by <%= @decisionroom.creator.email %> </h4>
 <div>
 
 <h3> Alternatives</h3>
 <table class="Alternatives_show">
 	<tr>
-		<th>No.</th>
-		<th>Name</th>
-		<th>Description</th>
+		<td>No.</td>
+		<td>Name</td>
+		<td>Description</td>
 	</tr>
 
 	<% $i = 0 %>
@@ -28,10 +25,10 @@
 <h3> Criterions </h3>
 <table class="Criterions_show">
 	<tr>
-		<th>No.</th>
-		<th>Name</th>
-		<th>Description</th>
-		<th>Weight</th>
+		<td>No.</td>
+		<td>Name</td>
+		<td>Description</td>
+		<td>Weight</td>
 	</tr>
 
 	<% $j = 0 %>
@@ -49,16 +46,16 @@
 <h3> Votes </h3>
 <table>
 	<tr>
-		<th>
+		<td>
 			Criterion
-		</th>
-		<th>
+		</td>
+		<td>
 			Weight
-		</th>
+		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
-		<th>
+		<td>
 			<%= alternative.name %>
-		</th>
+		</td>
 		<% end %>
 	</tr>
 	<% @decisionroom.criterions.each do |criterion| %>
@@ -86,16 +83,16 @@
 <h3> Votes Weighted </h3>
 <table>
 	<tr>
-		<th>
+		<td>
 			Criterion
-		</th>
-		<th>
+		</td>
+		<td>
 			Weight
-		</th>
+		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
-		<th>
+		<td>
 			<%= alternative.name %>
-		</th>
+		</td>
 		<% end %>
 	</tr>
 	<% @decisionroom.criterions.each do |criterion| %>
@@ -120,12 +117,12 @@
 	<% end %>
 
 	<tr>
-		<th>
+		<td>
 			Sum
-		</th>
-		<th>
+		</td>
+		<td>
 			1
-		</th>
+		</td>
 		<% @decisionroom.alternatives.each do |alter| %>
 		<td>
 			<% if WeightedSum.find_by(alternative_id: alter.id, user_id: current_user.id) then %>

@@ -3,15 +3,15 @@
 
 <table>
 	<tr>
-		<th>
+		<td>
 			No.
-		</th>
-		<th>
+		</td>
+		<td>
 			Decisionmaker
-		</th>
-		<th>
+		</td>
+		<td>
 			Has voted?
-		</th>
+		</td>
 	</tr>
 		<% $i = 1 %>
 		<% @decisionmaker.each do |dm| %>
@@ -23,7 +23,7 @@
 			<%= dm.email %>
 		</td>
 		<td>
-			<% if  UserDecisionroom.find_by(user_id: dm.id).has_voted then %>
+			<% if  @decisionroom.user_decisionrooms.find_by(user_id: dm.id).has_voted then %>
 			<%= "Yes" %>
 			<% else %> 
 			<%= "No" %>

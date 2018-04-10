@@ -11,10 +11,10 @@
 <%= form_for @decisionroom do |f| %>
 <table>
 	<tr>
-		<th> Criterions </th>
-		<th> Weight </th>
+		<td> Criterions </td>
+		<td> Weight </td>
 		<% @decisionroom.alternatives.each do |alternative| %>
-			<th> <%= alternative.name %> </th>
+			<td> <%= alternative.name %> </td>
 			<% @ary.push(alternative.id) %>
 		<% end %>
 	</tr>

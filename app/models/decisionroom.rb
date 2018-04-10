@@ -1,4 +1,5 @@
 class Decisionroom < ApplicationRecord
+	before_create :set_has_outcome_to_false
 	has_many :user_decisionrooms
 	has_many :tables
 	has_many :alternatives, inverse_of: :decisionroom, dependent: :destroy
@@ -11,4 +12,8 @@ class Decisionroom < ApplicationRecord
 	accepts_nested_attributes_for :alternatives, allow_destroy: true, reject_if: :all_blank
 	accepts_nested_attributes_for :criterions, allow_destroy: true, reject_if: :all_blank
 	accepts_nested_attributes_for :votes, allow_destroy: true, reject_if: :all_blank
+
+	def set_has_outcome_to_false
+		self.has_outcome = false
+	end
 end

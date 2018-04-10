@@ -5,16 +5,16 @@
 <h3> Decisionmaker: <%= User.find(user.id).email %> </h3>
 <table>
 	<tr>
-		<th>
+		<td>
 			Criterion
-		</th>
-		<th>
+		</td>
+		<td>
 			Weight
-		</th>
+		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
-		<th>
+		<td>
 			<%= alternative.name %>
-		</th>
+		</td>
 		<% end %>
 	</tr>
 	<% @decisionroom.criterions.each do |criterion| %>
@@ -33,16 +33,16 @@
 	</tr>
 	<% end %>
 	<tr>
-		<th>
+		<td>
 			Sum
-		</th>
-		<th>
+		</td>
+		<td>
 			1
-		</th>
+		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
-		<th>
+		<td>
 			<%= WeightedSum.find_by(user_id: user.id, alternative_id: alternative.id).value_weighted_sum %>
-		</th>
+		</td>
 		<% end %>
 	</tr>
 </table>
@@ -51,16 +51,16 @@
 <h3> Team Decision Outcome </h3>
 <table>
 	<tr>
-		<th>
+		<td>
 			Criterion
-		</th>
-		<th>
+		</td>
+		<td>
 			Weight
-		</th>
+		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
-		<th>
+		<td>
 			<%= alternative.name %>
-		</th>
+		</td>
 		<% end %>
 	</tr>
 	<% @decisionroom.criterions.each do |criterion| %>
@@ -79,16 +79,20 @@
 	</tr>
 	<% end %>
 	<tr>
-		<th>
+		<td>
 			Sum
-		</th>
-		<th>
+		</td>
+		<td>
 			1
-		</th>
+		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
-		<th>
+		<td>
 			<%= TeamoutcomeSum.find_by(decisionroom_id: @decisionroom.id, alternative_id: alternative.id).outcome_sum %>
-		</th>
+		</td>
 		<% end %>
 	</tr>
 </table>
+
+<%= link_to "Back", decisionroom_path(@decisionroom) %>
+
+
