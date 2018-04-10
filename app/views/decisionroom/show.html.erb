@@ -114,10 +114,26 @@
 			<%= "-" %>
 			<% end %>
 		</td>
-		<% end %>
+		<%end %>
 	</tr>
 	<% $i += 1 %>
 	<% end %>
+
+	<tr>
+		<th>
+			Sum
+		</th>
+		<th>
+			1
+		</th>
+		<% @decisionroom.alternatives.each do |alter| %>
+		<td>
+			<% if WeightedSum.find_by(alternative_id: alter.id, user_id: current_user.id) then %>
+			<%= WeightedSum.find_by(alternative_id: alter.id, user_id: current_user.id).value_weighted_sum %>
+			<% end %>
+		</td>
+		<% end %>
+	</tr>
 </table>
 
 
@@ -131,11 +147,11 @@ Decisiontable-Actions: </br>
 	<% end %>
 </p>
 <p class="Decisionmaker_actions">
-	<% if @decisionroom.creator.email == current_user.email then %>
 	Decisionmaker-Actions: </br>
+	<% if @decisionroom.creator.email == current_user.email then %>
 	<%= link_to "Add Decisionmakers", new_decisionroom_decisionmaker_path(decisionroom_id: @decisionroom.id) %> |
-	<%= link_to "See Decisionmakers", decisionroom_decisionmaker_index_path(decisionroom_id: @decisionroom.id) %>
 	<% end %>
+	<%= link_to "See Decisionmakers", decisionroom_decisionmaker_index_path(decisionroom_id: @decisionroom.id) %>
 </p>
 <p class="Decisionroom_actions">
 Decisionroom-Actions: </br>

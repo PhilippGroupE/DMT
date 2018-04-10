@@ -5,5 +5,4 @@ class Vote < ApplicationRecord
   def weighted_value(weight)
   	self.value_weighted = weight * self.value
   end
-
 end

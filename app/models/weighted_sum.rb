@@ -2,12 +2,11 @@ class WeightedSum < ApplicationRecord
 	belongs_to :user
 	belongs_to :alternative
 
-	def self.calculate_sum(alternative_id, alternative_user)
+	def self.create(alternative, user, sum)
 		ws = WeightedSum.new
-		ws.alternative_id = alternative_id
-		ws.user_id = alternative_user
-		summe = Vote.where(alternative_id: alternative_id, user_id: alternative_user).sum(:value_weighted)
-		ws.sum = summe
+		ws.alternative_id = alternative
+		ws.user_id = user
+		ws.value_weighted_sum = sum
 		ws.save
 	end
 end

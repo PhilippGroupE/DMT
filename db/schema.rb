@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20180409105636) do
   create_table "user_decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.bigint "decisionroom_id"
+    t.boolean "has_voted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["decisionroom_id"], name: "index_user_decisionrooms_on_decisionroom_id"
@@ -80,22 +81,10 @@ ActiveRecord::Schema.define(version: 20180409105636) do
     t.index ["user_id"], name: "index_votes_on_user_id"
   end
 
-  create_table "votes_results", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.float "sum", limit: 24
-    t.bigint "decisionroom_id"
-    t.bigint "user_id"
-    t.bigint "alternative_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["alternative_id"], name: "index_votes_results_on_alternative_id"
-    t.index ["decisionroom_id"], name: "index_votes_results_on_decisionroom_id"
-    t.index ["user_id"], name: "index_votes_results_on_user_id"
-  end
-
   create_table "weighted_sums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.bigint "alternative_id"
-    t.float "sum", limit: 24
+    t.float "value_weighted_sum", limit: 24
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alternative_id"], name: "index_weighted_sums_on_alternative_id"
@@ -108,9 +97,6 @@ ActiveRecord::Schema.define(version: 20180409105636) do
   add_foreign_key "votes", "criterions"
   add_foreign_key "votes", "decisionrooms"
   add_foreign_key "votes", "users"
-  add_foreign_key "votes_results", "alternatives"
-  add_foreign_key "votes_results", "decisionrooms"
-  add_foreign_key "votes_results", "users"
   add_foreign_key "weighted_sums", "alternatives"
   add_foreign_key "weighted_sums", "users"
 end

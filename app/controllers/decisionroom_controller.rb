@@ -1,6 +1,6 @@
 class DecisionroomController < ApplicationController
   before_action :authenticate_user!
-
+  
   def index
   	@decisionroom = current_user.decisionrooms.order(:id)
   end
@@ -25,7 +25,6 @@ class DecisionroomController < ApplicationController
     @decisionroom.creator = current_user
     if @decisionroom.save
       redirect_to decisionroom_new_votes_path(@decisionroom), notice: "Decisionroom created - Please insert your votes!"
-    
     else
       @errors = @decisionroom.errors.full_messages
       render:new
@@ -40,54 +39,42 @@ class DecisionroomController < ApplicationController
   def update
     # Initialize
     @decisionroom = Decisionroom.find(params[:id])
+    
     @decisionroom.update_attributes(decisionroom_params)
-    # Determining votes_weighted
-    @decisionroom.votes.each do |vote|
-      @decisionroom.criterions.each do |criterion|
-        if criterion.id == vote.criterion_id && current_user.id == vote.user_id then
-          vote.weighted_value(criterion.weight)
-        end
-      end
-    end
-
-    #Determining the sum of the alternatives
-    @decisionroom.alternatives.each do |alternative|
-      WeightedSum.calculate_sum(alternative.id,current_user.id)
-    end
-
     # Save Conditions
     if @decisionroom.save
+      after_update
       redirect_to decisionroom_path(@decisionroom), notice: "Decisionroom created!"
     else
       @errors = @decisionroom.errors.full_messages
       render:new
     end
-    
   end
 
-  def index_decisionmaker
-    decisionroom = Decisionroom.find(params[:decisionroom_id])
-    @decisionmaker = decisionroom.users.all
+  def after_update
+     @decisionroom = Decisionroom.find(params[:id])
+
+     # Determining votes_weighted
+     @decisionroom.votes.each do |vote|
+       @decisionroom.criterions.each do |criterion|
+         if criterion.id == vote.criterion_id && current_user.id == vote.user_id then
+           vote.weighted_value(criterion.weight)
+         end
+       end
+     end
+     # set has voted to true
+     @decisionroom.user_decisionrooms.find_by(user_id: current_user.id).update_attributes(has_voted: true)
+     @decisionroom.update_attributes(decisionroom_params)
+
+     # Determining weighted_sum 
+     @decisionroom.alternatives.each do |alternative|
+        sum = Vote.where(user_id: current_user.id, alternative_id: alternative.id).sum(:value_weighted)
+        WeightedSum.create(alternative.id, current_user.id, sum)
+     end
+     
+
   end
 
-  def new_decisionmaker
-    @decisionroom = Decisionroom.find(params[:decisionroom_id])
-    @new_decisionmaker = @decisionroom.users.build
-  end
-
-  def create_decisionmaker
-    @decisionroom = Decisionroom.find(params[:decisionroom_id])
-    @new_decisionmaker = User.find_by_email(params[:email])
-    @decisionroom.users << @new_decisionmaker
-    
-    if @decisionroom.save
-      redirect_to decisionroom_path(@decisionroom), notice: "User added!"
-    
-    else
-      @errors = @decisionroom.errors.full_messages
-      render:new_decisionmaker
-    end  
-  end
 
   def destroy
     @decisionroom = Decisionroom.find(params[:id])
@@ -96,7 +83,7 @@ class DecisionroomController < ApplicationController
   end
 
   def decisionroom_params
-    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description], criterions_attributes: [:id, :_destroy, :name, :description, :weight], votes_attributes: [:id, :_destroy, :alternative_id, :criterion_id, :user_id, :value, :value_weighted], votes_results_attributes: [:id, :_destroy, :alternative_id, :user_id, :sum])
+    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description], criterions_attributes: [:id, :_destroy, :name, :description, :weight], votes_attributes: [:id, :_destroy, :alternative_id, :criterion_id, :user_id, :value, :value_weighted], user_decisionroom_attributes: [:has_voted])
   end
 
 end

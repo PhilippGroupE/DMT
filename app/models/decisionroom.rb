@@ -4,7 +4,6 @@ class Decisionroom < ApplicationRecord
 	has_many :alternatives, inverse_of: :decisionroom, dependent: :destroy
 	has_many :criterions, inverse_of: :decisionroom, dependent: :destroy
 	has_many :votes, inverse_of: :decisionroom, dependent: :destroy
-	has_many :votes_results, inverse_of: :decisionroom, dependent: :destroy
 	has_many :users, :through => :user_decisionrooms
 	belongs_to :creator, :class_name => 'User'
 	validates :name, :presence => true, :uniqueness => true
@@ -12,5 +11,4 @@ class Decisionroom < ApplicationRecord
 	accepts_nested_attributes_for :alternatives, allow_destroy: true, reject_if: :all_blank
 	accepts_nested_attributes_for :criterions, allow_destroy: true, reject_if: :all_blank
 	accepts_nested_attributes_for :votes, allow_destroy: true, reject_if: :all_blank
-	accepts_nested_attributes_for :votes_results, allow_destroy: true, reject_if: :all_blank
 end
