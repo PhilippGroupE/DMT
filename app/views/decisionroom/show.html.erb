@@ -136,7 +136,12 @@
 	</tr>
 </table>
 
-
+<p class="Teamoutcome-actions">
+	<% if @test == 1 then %>
+		Team Outcome-Actions: </br>
+		<%= link_to "Generate Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_id: @decisionroom.id), method: :post %> 
+	<% end %>
+</p>
 
 <p class="Decisiontable-actions">
 Decisiontable-Actions: </br>

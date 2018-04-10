@@ -1,0 +1,2 @@
+module TeamoutcomeHelper
+end

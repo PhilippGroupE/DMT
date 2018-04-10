@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180409105636) do
+ActiveRecord::Schema.define(version: 20180410121444) do
 
   create_table "alternatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "decisionroom_id"
@@ -36,6 +36,28 @@ ActiveRecord::Schema.define(version: 20180409105636) do
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "teamoutcome_sums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "decisionroom_id"
+    t.bigint "alternative_id"
+    t.float "outcome_sum", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alternative_id"], name: "index_teamoutcome_sums_on_alternative_id"
+    t.index ["decisionroom_id"], name: "index_teamoutcome_sums_on_decisionroom_id"
+  end
+
+  create_table "teamoutcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "alternative_id"
+    t.bigint "criterion_id"
+    t.bigint "decisionroom_id"
+    t.float "average_value", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alternative_id"], name: "index_teamoutcomes_on_alternative_id"
+    t.index ["criterion_id"], name: "index_teamoutcomes_on_criterion_id"
+    t.index ["decisionroom_id"], name: "index_teamoutcomes_on_decisionroom_id"
   end
 
   create_table "user_decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -93,6 +115,8 @@ ActiveRecord::Schema.define(version: 20180409105636) do
 
   add_foreign_key "alternatives", "decisionrooms"
   add_foreign_key "criterions", "decisionrooms"
+  add_foreign_key "teamoutcome_sums", "alternatives"
+  add_foreign_key "teamoutcome_sums", "decisionrooms"
   add_foreign_key "votes", "alternatives"
   add_foreign_key "votes", "criterions"
   add_foreign_key "votes", "decisionrooms"

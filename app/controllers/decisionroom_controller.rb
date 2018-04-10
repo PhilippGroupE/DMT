@@ -8,6 +8,12 @@ class DecisionroomController < ApplicationController
   def show
     @decisionroom = current_user.decisionrooms.find(params[:id])
     @ary = Array.new
+    @test = 1
+    @decisionroom.user_decisionrooms.each do |decisionmaker|
+      if !decisionmaker.has_voted then
+        @test = 0
+      end
+    end
   end
 
   def new
@@ -64,9 +70,10 @@ class DecisionroomController < ApplicationController
      end
      # set has voted to true
      @decisionroom.user_decisionrooms.find_by(user_id: current_user.id).update_attributes(has_voted: true)
-     @decisionroom.update_attributes(decisionroom_params)
+     
 
      # Determining weighted_sum 
+     @decisionroom.update_attributes(decisionroom_params)
      @decisionroom.alternatives.each do |alternative|
         sum = Vote.where(user_id: current_user.id, alternative_id: alternative.id).sum(:value_weighted)
         WeightedSum.create(alternative.id, current_user.id, sum)
