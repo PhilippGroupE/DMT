@@ -3,7 +3,7 @@ class TeamoutcomeController < ApplicationController
 
 
 	def create
-		decisionroom = Decisionroom.find(params[:decisionroom_id])
+		decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
 
 		decisionroom.alternatives.each do |alternative|
 			decisionroom.criterions.each do |criterion|
@@ -19,7 +19,7 @@ class TeamoutcomeController < ApplicationController
 	end
 
 	def after_create
-		decisionroom = Decisionroom.find(params[:decisionroom_id])
+		decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
 
 		decisionroom.alternatives.each do |alternative|
 			sum = Teamoutcome.where(alternative_id: alternative.id, decisionroom_id: decisionroom.id).sum(:average_value)
@@ -30,7 +30,7 @@ class TeamoutcomeController < ApplicationController
 	end
 
 	def index
-		@decisionroom = Decisionroom.find(params[:decisionroom_id])
+		@decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
 	end
 
 end

@@ -7,26 +7,44 @@
 	</ul>
 </div>
 <% end %>
+<h3> Decision Information </h3>
+<h4> Decision Name </h4>
 <%= simple_form_for @decisionroom, url: {action: "create"} do |f| %>
-	<%= f.input :name %>
+	<%= f.input :name, label: false %>
+<h4> What is the Decision about? </h4>
+	<%= f.input :description, label: false %>
 <div class="Alternatives">
-	<h3> Alternatives </h3>
+<br/>
+<br/>
+	<h4> Add your Alternatives </h4>
+	<% $i = 1 %>
 	<%= f.simple_fields_for :alternatives do |alternative| %>
+		<b> Alternative #<%= $i %> </b>
 		<%= render 'alternative_fields', f: alternative %>
+		<% $i += 1 %>
 		<% end %>
 </div>
 		<div class="links">
-		<%= link_to_add_association 'Add Alternative', f, :alternatives %>
+		<button><%= link_to_add_association 'Add Alternative', f, :alternatives %>
+		</button>
 		</div>
 <div class="Criterions">
-	<h3> Criterions </h3>
+<br/>
+<br/>
+	<h4> Add your Criterions </h4>
+	<% $i = 1 %>
 	<%= f.simple_fields_for :criterions do |criterion| %>
+		<h5> Criterion #<%= $i %> </h5>
 		<%= render 'criterion_fields', f: criterion %>
+		<% $i += 1 %>
 		<% end %>
 </div>
 		<div class="links">
-		<%= link_to_add_association 'Add Criterion', f, :criterions %>
+		<button><%= link_to_add_association 'Add Criterion', f, :criterions %>
+		</button>
 		</div>
+		</br>
+		</br>
 		<%= f.submit %>
 <% end %>
 

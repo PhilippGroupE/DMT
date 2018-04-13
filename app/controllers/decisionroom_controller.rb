@@ -1,15 +1,17 @@
 class DecisionroomController < ApplicationController
-  before_action :authenticate_user!
-  
+  before_action :logged_in?, except: [:new, :create, :new_ranks, :sort]
+  skip_before_action :verify_authenticity_token, only: [:sort]
+  include SessionsHelper
+
   def index
-  	@decisionroom = current_user.decisionrooms.order(:id)
+  	@decisionroom = current_user.decisionrooms
   end
 
   def show
-    @decisionroom = current_user.decisionrooms.find(params[:id])
+    @decisionroom = Decisionroom.find_by(token: params[:token])
     @ary = Array.new
     @test = 1
-    @decisionroom.user_decisionrooms.each do |decisionmaker|
+    User.where(decisionroom_id: @decisionroom.id).each do |decisionmaker|
       if !decisionmaker.has_voted then
         @test = 0
       end
@@ -17,34 +19,59 @@ class DecisionroomController < ApplicationController
   end
 
   def new
-    @decisionroom = current_user.decisionrooms.build
+    @decisionroom = Decisionroom.new
+  end
+
+  def new_ranks
+    @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
+  end
+
+  def sort
+    params[:criterion].each_with_index do |id, index|
+      Criterion.where(id: id).update_all(position: index + 1)
+    end
+    # SMARTER Algorithm
+    params[:criterion].each_with_index do |id|
+      factor = 1 / Criterion.where(decisionroom_id: Criterion.find_by(id: id).decisionroom_id).count.to_f
+      sum = 0.0
+      Criterion.where(decisionroom_id: Criterion.find_by(id: id).decisionroom_id).each do |crit|
+        if crit.position >= Criterion.find_by(id: id).position then
+          sum += 1 / crit.position.to_f
+          puts "Criterion: #{Criterion.find_by(id: id).id}"
+          puts "Position: #{Criterion.find_by(id: id).position.to_f}"
+          puts "Sum: #{sum}"
+        end
+      end
+      puts "Factor: #{factor}"
+      weight = factor * sum.to_f  
+      puts "Weight: #{weight}"
+      Criterion.where(id: id).update_all(weight: weight)
+    end
+    head :ok
   end
 
   def new_votes
-    @decisionroom = Decisionroom.find(params[:decisionroom_id])
+    @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
     @ary = Array.new
   end
 
   def create
-    @decisionroom = current_user.decisionrooms.build(decisionroom_params)
-    @decisionroom.users << current_user
-    @decisionroom.creator = current_user
+    @decisionroom = Decisionroom.create(decisionroom_params)
     if @decisionroom.save
-      redirect_to decisionroom_new_votes_path(@decisionroom), notice: "Decisionroom created - Please insert your votes!"
+      redirect_to decisionroom_new_ranks_path(decisionroom_token: @decisionroom.token), notice: "Decisionroom created - Please insert your votes!"
     else
       @errors = @decisionroom.errors.full_messages
       render:new
     end
-
   end
 
   def edit
-    @decisionroom = Decisionroom.find(params[:decisionroom_id])
+    @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
   end
 
   def update
     # Initialize
-    @decisionroom = Decisionroom.find(params[:id])
+    @decisionroom = Decisionroom.find_by(token: params[:token])
     
     @decisionroom.update_attributes(decisionroom_params)
     # Save Conditions
@@ -58,7 +85,7 @@ class DecisionroomController < ApplicationController
   end
 
   def after_update
-     @decisionroom = Decisionroom.find(params[:id])
+     @decisionroom = Decisionroom.find_by(token: params[:token])
 
      # Determining votes_weighted
      @decisionroom.votes.each do |vote|
@@ -69,7 +96,7 @@ class DecisionroomController < ApplicationController
        end
      end
      # set has voted to true
-     @decisionroom.user_decisionrooms.find_by(user_id: current_user.id).update_attributes(has_voted: true)
+     @decisionroom.users.find_by(id: current_user.id).update_attributes(has_voted: true)
      
 
      # Determining weighted_sum 
@@ -84,13 +111,12 @@ class DecisionroomController < ApplicationController
 
 
   def destroy
-    @decisionroom = Decisionroom.find(params[:id])
+    @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
     @decisionroom.destroy
     redirect_to decisionroom_index_path, notice: "Decisionroom deleted!"
   end
 
   def decisionroom_params
-    params.require(:decisionroom).permit(:name, alternatives_attributes: [:id, :_destroy, :name, :description], criterions_attributes: [:id, :_destroy, :name, :description, :weight], votes_attributes: [:id, :_destroy, :alternative_id, :criterion_id, :user_id, :value, :value_weighted], user_decisionroom_attributes: [:has_voted])
+    params.require(:decisionroom).permit(:token ,:name, :description, alternatives_attributes: [:id, :_destroy, :name, :description], criterions_attributes: [:id, :_destroy, :name, :description, :weight, :position], votes_attributes: [:id, :_destroy, :alternative_id, :criterion_id, :user_id, :value, :value_weighted], user_decisionroom_attributes: [:has_voted])
   end
-
 end

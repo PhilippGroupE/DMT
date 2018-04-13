@@ -1,0 +1,25 @@
+<head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<h3>
+What do you think is the most important criterion?
+</h3>
+<h4>
+Sort less important criterions below the top one.	
+</h4>
+</br>
+<table>
+	<tbody id="criterions" class="list-group" data-url="<%= decisionroom_sort_path %>">
+		<% $i = 0 %>
+		<% @decisionroom.criterions.order(:position).each do |criterion| %>
+		<tr class="list-group-items" id="<%= dom_id(criterion) %>"> <td><%= criterion.name %> </td> </tr>
+		<% end %>
+	</tbody>
+</table>
+
+<button class="button special">
+	<%= link_to "Be the first Decisionmaker!", new_decisionroom_user_path(@decisionroom) %> 
+</button>

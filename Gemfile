@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'devise'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.5'
 # Use mysql as the database for Active Record
@@ -36,6 +35,7 @@ gem 'simple_form'
 gem 'cocoon'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'acts_as_list'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410121444) do
+ActiveRecord::Schema.define(version: 20180411150222) do
 
   create_table "alternatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "decisionroom_id"
@@ -28,15 +28,19 @@ ActiveRecord::Schema.define(version: 20180410121444) do
     t.float "weight", limit: 24
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["decisionroom_id"], name: "index_criterions_on_decisionroom_id"
   end
 
   create_table "decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
+    t.string "description"
     t.integer "creator_id"
     t.boolean "has_outcome"
+    t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_decisionrooms_on_token"
   end
 
   create_table "teamoutcome_sums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -61,32 +65,15 @@ ActiveRecord::Schema.define(version: 20180410121444) do
     t.index ["decisionroom_id"], name: "index_teamoutcomes_on_decisionroom_id"
   end
 
-  create_table "user_decisionrooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "user_id"
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "email"
     t.bigint "decisionroom_id"
     t.boolean "has_voted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["decisionroom_id"], name: "index_user_decisionrooms_on_decisionroom_id"
-    t.index ["user_id", "decisionroom_id"], name: "index_user_decisionrooms_on_user_id_and_decisionroom_id", unique: true
-    t.index ["user_id"], name: "index_user_decisionrooms_on_user_id"
-  end
-
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["decisionroom_id"], name: "index_users_on_decisionroom_id"
+    t.index ["name", "email", "decisionroom_id"], name: "index_users_on_name_and_email_and_decisionroom_id", unique: true
   end
 
   create_table "votes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

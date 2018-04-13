@@ -8,22 +8,32 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body style="text-align:center;">
-    <div class="main-body" style="width:65%;margin:0 auto;">
-    <header>
-  	  <p class="notice"><%= notice %></p>
-  	  <p class="alert"><%= alert %></p>
-  	  <% if user_signed_in? then %>
-  	  Signed in as: <%= current_user.email%>
-      <button><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></button>
-  	  <% else %>
-  	  <button><%= link_to "Sign In", new_user_session_path %></button>
-  	  <button><%= link_to "Sign Up", new_user_registration_path %></button>
-  	  <% end %>
+  <body class="landing">
+    <div id="page-wrapper">
+    <!-- header -->
+    <header id="header" class="alt" style="background-color: black;">
+      <% if !current_user.nil? then %>
+      <h1><%= link_to "deciVo", decisionroom_path(@decisionroom)%> alphaest alpha version ever </h1>
+      <% else %>
+      <h1><%= link_to "deciVo", new_decisionroom_path%> alphaest alpha version ever </h1>
+      <% end %>
+      <% if !current_user.nil? then %>
+            <%= link_to "Add Decisionmakers", decisionroom_user_add_member_path(decisionroom_token: @decisionroom.token), {class: "button", style: "position:absolute;right:0;"} %>
+      <%end%>
+      <!-- nav -->
+      <!-- nav end -->
     </header>
+
+
+    <!-- end of header -->
     </br>
     </br>
+    <div style="text-align:center;">
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    
     <%= yield %>
+    <div>
     </div>
   </body>
 </html>

@@ -1,0 +1,15 @@
+<% if @errors.present? %>
+<div class="errors">
+	<ul>
+		<% @errors.each do |error| %>
+		<li> <%= error %> </li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+
+<%= simple_form_for @user, url: {action: "create"} do |f| %>
+	<%= f.input :name, label: false, required: true, placeholder: "Your Name" %>
+	<%= f.input :email, label: false, placeholder: "Your Email", hint: "Not required, but if you want to see the further deployment of the app you can participate!" %>
+	<%= f.submit "Create Your Decision" %>
+	<% end %>

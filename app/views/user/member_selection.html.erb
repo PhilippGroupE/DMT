@@ -1,0 +1,14 @@
+<h3> Welcome! </h3>
+</br>
+<h4>Before participating on the decision making. Please, check if you are already registered: </h4>
+
+<% @decisionroom.users.each do |decisionmaker| %>
+	<%= link_to decisionmaker.name, {:controller => "user", :action => "member_chosen", user_id: decisionmaker.id, decisionroom_token: @decisionroom.token} %>
+<% end %>
+<br/>
+<br/>
+<h4>
+	If you are new to this decision, click below to participate!
+</h4>
+
+<%= link_to "Be a new member!", {:controller => "user", :action => "new"},class: "button special" %>
