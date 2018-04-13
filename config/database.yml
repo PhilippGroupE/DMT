@@ -49,6 +49,6 @@ test:
 #
 production:
   <<: *default
-  database: DMT_production
-  username: DMT
-  url: <%= ENV['DMT_DATABASE_PASSWORD'] %>
+  database: ENV['DATABASE_URL']
+  username: ENV['DATABASE_USERNAME']
+  password: ENV['DATABASE_PASSWORDs']
