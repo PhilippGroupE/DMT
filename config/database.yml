@@ -48,5 +48,5 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  adapter: mysql
+  adapter: mysql2
   url: <%= ENV['DATABASE_URL'] %>
