@@ -24,8 +24,7 @@
 		<% end %>
 </div>
 		<div class="links">
-		<button><%= link_to_add_association 'Add', f, :alternatives %>
-		</button>
+		<%= link_to_add_association 'Add', f, :alternatives, class: "button" %>
 		</div>
 <div class="Criterions">
 <hr />
@@ -38,8 +37,7 @@
 		<% end %>
 </div>
 		<div class="links">
-		<button><%= link_to_add_association 'Add', f, :criterions %>
-		</button>
+		<%= link_to_add_association 'Add', f, :criterions, class: "button" %>
 		</div>
 <hr />
 		<%= f.submit "Create Decision", :class => "button special" %>	
