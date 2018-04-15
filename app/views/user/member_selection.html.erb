@@ -1,10 +1,22 @@
+<article id="main">
+<section class="wrapper style5">
+<div class="inner">
+<section>
 <h3> Welcome! </h3>
 </br>
 <h4>Before participating on the decision making. Please, check if you are already registered: </h4>
-
+<table>
 <% @decisionroom.users.each do |decisionmaker| %>
+	<tr>
+	<td>
 	<%= link_to decisionmaker.name, {:controller => "user", :action => "member_chosen", user_id: decisionmaker.id, decisionroom_token: @decisionroom.token} %>
+	</td>
+	<td>
+	decisionmaker.email
+	</td>
+	</tr>
 <% end %>
+</table>
 <br/>
 <br/>
 <h4>
@@ -12,3 +24,7 @@
 </h4>
 
 <%= link_to "Be a new member!", {:controller => "user", :action => "new"},class: "button special" %>
+</section>
+</div>
+</section>
+</article>

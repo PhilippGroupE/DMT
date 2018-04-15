@@ -3,13 +3,17 @@
 <script src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
-
-<h3>
+<article id="main">
+<section class="wrapper style5">
+<div class="inner">
+<section>
+<h2>
 What do you think is the most important criterion?
-</h3>
-<h4>
-Sort less important criterions below the top one.	
-</h4>
+</h2>
+<h5>
+Sort less important criterions below the top one<br/>
+- by using drag and drop!	
+</h5>
 </br>
 <table>
 	<tbody id="criterions" class="list-group" data-url="<%= decisionroom_sort_path %>">
@@ -19,7 +23,10 @@ Sort less important criterions below the top one.
 		<% end %>
 	</tbody>
 </table>
-
 <button class="button special">
 	<%= link_to "Be the first Decisionmaker!", new_decisionroom_user_path(@decisionroom) %> 
 </button>
+</section>
+</article>
+</div>
+</section>

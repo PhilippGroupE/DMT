@@ -1,3 +1,7 @@
+<article id="main">
+<section class="wrapper style5">
+<div class="inner">
+<section>
 <h2>
 	Decision Participants
 </h2>
@@ -39,10 +43,13 @@
 			<% end %>
 		</td>
 		<td>
-			<%= link_to "Remove", decisionroom_user_path(decisionroom_token: @decisionroom.token, id: dm.id), :method => :delete %>
+			<%= link_to "Remove", decisionroom_user_path(decisionroom_token: @decisionroom.token, user_id: dm.id, id: dm.id), :method => :delete %>
 		</td>
 	</tr>
 	<% $i += 1 %>
 	<%end %>
 </table>
-<%= link_to "Back", decisionroom_path(@decisionroom) %>
+</section>
+</div>
+</section>
+</article>

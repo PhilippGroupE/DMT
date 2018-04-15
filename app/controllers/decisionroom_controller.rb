@@ -24,6 +24,9 @@ class DecisionroomController < ApplicationController
 
   def new_ranks
     @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
+    @decisionroom.criterions.each_with_index do |criterion, index|
+      Criterion.where(id: criterion.id).update_all(position: index + 1)
+    end
   end
 
   def sort

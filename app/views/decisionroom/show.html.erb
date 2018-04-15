@@ -1,11 +1,14 @@
+<article id="main">
+<section class="wrapper style5">
+<div class="inner">
+<section>
 <h2><%= @decisionroom.name %> </h2>
-<% if current_user.id = @decisionroom.creator.id then %>
+<% if current_user.id == @decisionroom.creator.id then %>
 <h4>Created by You </h4>
 <% else %>
 <h4>Created by <%= @decisionroom.creator.name %> </h4>
 <% end %>
-<div>
-
+<hr />
 <h3> Alternatives</h3>
 <table class="Alternatives_show">
 	<tr>
@@ -24,8 +27,7 @@
 	</tr>
 	<% end %>
 </table>
-
-
+<hr />
 <h3> Criterions </h3>
 <table class="Criterions_show">
 	<tr>
@@ -46,7 +48,8 @@
 	</tr>
 	<% end %>
 </table>
-
+<hr />
+<% if current_user.has_voted == 1 then %>
 <h3> Votes </h3>
 <table>
 	<tr>
@@ -83,7 +86,7 @@
 	<% $i += 1 %>
 	<% end %>
 </table>
-
+<hr />
 <h3> Votes Weighted </h3>
 <table>
 	<tr>
@@ -136,25 +139,27 @@
 		<% end %>
 	</tr>
 </table>
-
+<hr />
+<% end %>
 <p class="Teamoutcome-actions">
 	<% if @test == 1 then %>
 		Team Outcome-Actions: </br>
-		<%= link_to "Generate Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_token: @decisionroom.token), method: :post %> 
+		<%= link_to "Generate Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_token: @decisionroom.token), method: :post, class: "button special" %> 
 	<% end %>
 </p>
 
 <p class="Decisiontable-actions">
 Decisiontable-Actions: </br>
-	<% if @decisionroom.creator.email == current_user.email then %>
-	<%= link_to "Change your Votes!", decisionroom_new_votes_path(decisionroom_token: @decisionroom.token) %>
-	<% else %>
-	<%= link_to "Vote!", decisionroom_new_votes_path(decisionroom_token: @decisionroom.token) %>
-	<% end %>
+	<%= link_to "Vote!", decisionroom_new_votes_path(decisionroom_token: @decisionroom.token), class: "button special" %>
 </p>
 <p class="Decisionmaker_actions">
 	Decisionmaker-Actions: </br>
-	<%= link_to "Add Decisionmakers", decisionroom_user_add_member_path(decisionroom_token: @decisionroom.token) %> |
-	<%= link_to "See Decisionmakers", decisionroom_user_index_path(decisionroom_token: @decisionroom.token) %>
+	<%= link_to "Add Decisionmakers", decisionroom_user_add_member_path(decisionroom_token: @decisionroom.token), class: "button special" %> 
+	<br />
+	<%= link_to "See Decisionmakers", decisionroom_user_index_path(decisionroom_token: @decisionroom.token), class: "button" %> 
 </p>
 </div>
+</section>
+</div>
+</section>
+</article>

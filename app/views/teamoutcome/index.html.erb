@@ -1,6 +1,10 @@
-<h1>Teamoutcome#index</h1>
-<p>Find me in app/views/teamoutcome/index.html.erb</p>
-
+<article id="main">
+<section class="wrapper style5">
+<div class="inner">
+<section>
+<h2>
+	Team Decision Outcome
+</h2>
 <% @decisionroom.users.each do |user| %>
 <h3> Decisionmaker: <%= User.find(user.id).email %> </h3>
 <table>
@@ -48,6 +52,7 @@
 </table>
 <% end %>
 
+<hr />
 <h3> Team Decision Outcome </h3>
 <table>
 	<tr>
@@ -94,5 +99,7 @@
 </table>
 
 <%= link_to "Back", decisionroom_path(@decisionroom) %>
-
-
+</section>
+</div>
+</section>
+</article>

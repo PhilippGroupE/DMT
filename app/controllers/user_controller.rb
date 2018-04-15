@@ -39,7 +39,7 @@ class UserController < ApplicationController
 	end
 
 	def destroy
-		User.find(:id).destroy
+		User.find_by(id: params[:user_id]).destroy
 	end
 
 	def user_params

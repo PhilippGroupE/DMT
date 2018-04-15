@@ -1,6 +1,5 @@
 class TeamoutcomeController < ApplicationController
-	before_action :authenticate_user!
-
+	before_action :logged_in?
 
 	def create
 		decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])

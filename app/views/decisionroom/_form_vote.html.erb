@@ -7,7 +7,6 @@
 	</ul>
 </div>
 <% end %>
-<%= current_user.id %>
 <%= form_for @decisionroom do |f| %>
 <table>
 	<tr>
@@ -15,6 +14,7 @@
 		<td> Weight </td>
 		<% @decisionroom.alternatives.each do |alternative| %>
 			<td> <%= alternative.name %> </td>
+			<td></td>
 			<% @ary.push(alternative.id) %>
 		<% end %>
 	</tr>
@@ -27,11 +27,11 @@
 			<%= vote.hidden_field :alternative_id, :value => @ary[$i] %>
 			<%= vote.hidden_field :criterion_id, :value => criterion.id %>
 			<%= vote.hidden_field :user_id, :value => current_user.id %>
-			<td> <%= vote.number_field :value %> <td>
+			<td> <%= vote.number_field :value, min: 1, max: 5, style: "color:black;" %> <td>
 		<% $i += 1 %>
 		<% end %> 
 	</tr>
 	<% end %>
 </table>
-	<%= f.submit "Add Votes" %>
+	<%= f.submit "Add Votes", class: "button special" %>
 <%end%>
