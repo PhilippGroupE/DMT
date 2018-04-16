@@ -40,14 +40,9 @@ class DecisionroomController < ApplicationController
       Criterion.where(decisionroom_id: Criterion.find_by(id: id).decisionroom_id).each do |crit|
         if crit.position >= Criterion.find_by(id: id).position then
           sum += 1 / crit.position.to_f
-          puts "Criterion: #{Criterion.find_by(id: id).id}"
-          puts "Position: #{Criterion.find_by(id: id).position.to_f}"
-          puts "Sum: #{sum}"
         end
       end
-      puts "Factor: #{factor}"
       weight = factor * sum.to_f  
-      puts "Weight: #{weight}"
       Criterion.where(id: id).update_all(weight: weight)
     end
     head :ok
@@ -61,10 +56,32 @@ class DecisionroomController < ApplicationController
   def create
     @decisionroom = Decisionroom.create(decisionroom_params)
     if @decisionroom.save
+      after_create(@decisionroom)
       redirect_to decisionroom_new_ranks_path(decisionroom_token: @decisionroom.token), notice: "Decisionroom created - Please insert your votes!"
     else
       @errors = @decisionroom.errors.full_messages
       render:new
+    end
+  end
+
+  def after_create(decisionroom)
+    $i = 1
+    decisionroom.criterions.each do |criterion|
+      Criterion.where(id: criterion.id).update_all(position: $i)
+      $i += 1
+    end
+
+    #SMARTER Method
+    decisionroom.criterions.each do |criterion|
+      factor = 1 / Criterion.where(decisionroom_id: Criterion.find_by(id: criterion.id).decisionroom_id).count.to_f
+      sum = 0.0
+      Criterion.where(decisionroom_id: Criterion.find_by(id: criterion.id).decisionroom_id).each do |crit|
+        if crit.position >= Criterion.find_by(id: criterion.id).position then
+          sum += 1 / crit.position.to_f
+        end
+      end
+      weight = factor * sum.to_f
+      Criterion.where(id: criterion.id).update_all(weight: weight)
     end
   end
 
@@ -100,7 +117,6 @@ class DecisionroomController < ApplicationController
      end
      # set has voted to true
      @decisionroom.users.find_by(id: current_user.id).update_attributes(has_voted: true)
-     
 
      # Determining weighted_sum 
      @decisionroom.update_attributes(decisionroom_params)
@@ -108,7 +124,6 @@ class DecisionroomController < ApplicationController
         sum = Vote.where(user_id: current_user.id, alternative_id: alternative.id).sum(:value_weighted)
         WeightedSum.create(alternative.id, current_user.id, sum)
      end
-     
 
   end
 
