@@ -19,9 +19,11 @@
 		<td>
 			Has voted?
 		</td>
+		<% if current_user.id == @decisionroom.creator.id %>
 		<td>
 			Delete
 		</td>
+		<% end %>
 	</tr>
 		<% $i = 1 %>
 		<% @decisionroom.users.each do |dm| %>
@@ -42,13 +44,18 @@
 			<%= "No" %>
 			<% end %>
 		</td>
+		<% if current_user.id == @decisionroom.creator.id %>
 		<td>
+			<% if User.find(dm.id).id != @decisionroom.creator.id then %>
 			<%= link_to "Remove", decisionroom_user_path(decisionroom_token: @decisionroom.token, user_id: dm.id, id: dm.id), :method => :delete %>
+			<% end %>
 		</td>
+		<% end %>
 	</tr>
 	<% $i += 1 %>
 	<%end %>
 </table>
+<%= link_to "Back", :back, class: "button" %>
 </section>
 </div>
 </section>

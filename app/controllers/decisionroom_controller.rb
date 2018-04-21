@@ -3,10 +3,6 @@ class DecisionroomController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:sort]
   include SessionsHelper
 
-  def index
-  	@decisionroom = current_user.decisionrooms
-  end
-
   def show
     @decisionroom = Decisionroom.find_by(token: params[:token])
     @ary = Array.new

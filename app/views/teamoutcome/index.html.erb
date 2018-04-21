@@ -5,6 +5,11 @@
 <h2>
 	Team Decision Outcome
 </h2>
+
+<h4>
+	Your team prefers the alternative "<%= @decisionroom.alternatives.find_by(id: TeamoutcomeSum.find_by(outcome_sum: TeamoutcomeSum.where(decisionroom_id: @decisionroom.id).maximum(:outcome_sum)).alternative_id).name %>"
+</h4>
+
 <% @decisionroom.users.each do |user| %>
 <h3> Decisionmaker: <%= User.find(user.id).name %> </h3>
 <table>

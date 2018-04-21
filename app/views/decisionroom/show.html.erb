@@ -1,4 +1,21 @@
 <article id="main">
+<% if @decisionroom.has_outcome? then %>
+	<header>
+	<h2>The decision "<%= @decisionroom.name %>" made by
+	<% if current_user.id == @decisionroom.creator.id then %>
+	you
+	<% else %>
+	<%= @decisionroom.creator.name %>
+	<% end %>
+	has an outcome!
+	</h2>
+	<p>
+	Your Team prefers the alternative:
+	"<%= @decisionroom.alternatives.find_by(id: TeamoutcomeSum.find_by(outcome_sum: TeamoutcomeSum.where(decisionroom_id: @decisionroom.id).maximum(:outcome_sum)).alternative_id).name %>"! <br />
+	</p>
+	<%= link_to "See Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_token: @decisionroom.token), class: "button special" %>
+	</header>
+<% else %>
 <section class="wrapper style5">
 <div class="inner">
 <section>
@@ -142,9 +159,13 @@
 <hr />
 <% end %>
 <p class="Teamoutcome-actions">
-	<% if @test == 1 then %>
+	<% if @test == 1 && @decisionroom.users.count > 1 then %>
 		Team Outcome-Actions: </br>
-		<%= link_to "Generate Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_token: @decisionroom.token), method: :post, class: "button special" %> 
+		<% if !@decisionroom.has_outcome? then %>
+		<%= link_to "Generate Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_token: @decisionroom.token), method: :post, class: "button special" %>
+		<% else %>
+		<%= link_to "See Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_token: @decisionroom.token), class: "button special" %>
+		<% end %>
 	<% end %>
 </p>
 
@@ -159,6 +180,7 @@ Decisiontable-Actions: </br>
 	<%= link_to "See Decisionmakers", decisionroom_user_index_path(decisionroom_token: @decisionroom.token), class: "button" %> 
 </p>
 </div>
+<% end %>
 </section>
 </div>
 </section>

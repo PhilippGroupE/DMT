@@ -2,10 +2,25 @@
 <section class="wrapper style5">
 <div class="inner">
 <section>
+<% if current_user.has_voted then %>
+
+Hi <%= current_user.name %>, 
+
+it seems like you have voted already...
+
+Just wait for votes of the other decisionmakers ;) <br />
+<hr />
+Click here to see whom of the participants voted already:<br />
+<%= link_to "See Decisionmakers", decisionroom_user_index_path(decisionroom_token: @decisionroom.token), class: "button" %> 
+<br />
+... or return to the main page:<br />
+<%= link_to "Back", decisionroom_path(token: @decisionroom.token), class: "button" %>
+<% else %>
+
 <h2> Add your Votes</h2>
 
 <%= render 'form_vote' %>
-
+<% end %>
 </section>
 </div>
 </section>

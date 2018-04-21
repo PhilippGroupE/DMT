@@ -40,6 +40,9 @@ class UserController < ApplicationController
 
 	def destroy
 		User.find_by(id: params[:user_id]).destroy
+		flash[:notice] = "Decisionmaker is deleted"
+		redirect_to decisionroom_path(token: params[:decisionroom_token])
+
 	end
 
 	def user_params
