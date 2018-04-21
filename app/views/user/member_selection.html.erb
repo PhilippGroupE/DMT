@@ -19,8 +19,9 @@
 <h4>
 	If you are new to this decision, click below to participate!
 </h4>
-
+<% if !@decisionroom.has_outcome then %>
 <%= link_to "Be a new member!", {:controller => "user", :action => "new"},class: "button special" %>
+<% end %>
 </section>
 </div>
 </section>
