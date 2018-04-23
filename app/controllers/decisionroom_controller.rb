@@ -1,5 +1,5 @@
 class DecisionroomController < ApplicationController
-  before_action :logged_in?, except: [:new, :create, :new_ranks, :sort]
+  before_action :logged_in?, except: [:new, :create, :new_ranks, :sort, :new_ranks_not_sorted]
   skip_before_action :verify_authenticity_token, only: [:sort]
   include SessionsHelper
 
@@ -20,6 +20,7 @@ class DecisionroomController < ApplicationController
 
   def new_ranks
     @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
+    before_sort(@decisionroom)
     @decisionroom.criterions.each_with_index do |criterion, index|
       Criterion.where(id: criterion.id).update_all(position: index + 1)
     end
@@ -44,6 +45,18 @@ class DecisionroomController < ApplicationController
     head :ok
   end
 
+  def new_ranks_not_sorted
+    @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
+
+    total_weights = Criterion.where(decisionroom_id: @decisionroom.id).count
+    Criterion.where(decisionroom_id: @decisionroom.id).each do |criterion|
+      weight = 1 / total_weights.to_f
+      Criterion.where(id: criterion.id).update_all(weight: weight)
+    end
+    redirect_to new_decisionroom_user_path(@decisionroom)
+  end
+
+
   def new_votes
     @decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
     @ary = Array.new
@@ -52,15 +65,18 @@ class DecisionroomController < ApplicationController
   def create
     @decisionroom = Decisionroom.create(decisionroom_params)
     if @decisionroom.save
-      after_create(@decisionroom)
-      redirect_to decisionroom_new_ranks_path(decisionroom_token: @decisionroom.token), notice: "Decisionroom created - Please insert your votes!"
+      if params[:commit] == 'Create Decision' then
+        redirect_to decisionroom_new_ranks_not_sorted_path(decisionroom_token: @decisionroom.token) 
+      elsif params[:commit] == 'Rank Your Criterions!' then
+        redirect_to decisionroom_new_ranks_path(decisionroom_token: :decisionroom_token), notice: "Decisionroom created - Please insert your votes!"
+      end
     else
       @errors = @decisionroom.errors.full_messages
       render:new
     end
   end
 
-  def after_create(decisionroom)
+  def before_sort(decisionroom)
     $i = 1
     decisionroom.criterions.each do |criterion|
       Criterion.where(id: criterion.id).update_all(position: $i)

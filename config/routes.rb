@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :decisionroom, param: :token do
   	  patch :sort
   	  get 'new_ranks'
+      get 'new_ranks_not_sorted'
   	  get 'new_votes'
       get 'user/member_selection'
       get 'user/new_member'
