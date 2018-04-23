@@ -68,7 +68,7 @@ class DecisionroomController < ApplicationController
       if params[:commit] == 'Create Decision' then
         redirect_to decisionroom_new_ranks_not_sorted_path(decisionroom_token: @decisionroom.token) 
       elsif params[:commit] == 'Rank Your Criterions!' then
-        redirect_to decisionroom_new_ranks_path(decisionroom_token: :decisionroom_token), notice: "Decisionroom created - Please insert your votes!"
+        redirect_to decisionroom_new_ranks_path(decisionroom_token: @decisionroom.token), notice: "Decisionroom created - Please insert your votes!"
       end
     else
       @errors = @decisionroom.errors.full_messages
