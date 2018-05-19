@@ -1,37 +1,4 @@
-class TeamoutcomeController < ApplicationController
-	before_action :logged_in?
-
-	def create
-		decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
-
-		decisionroom.alternatives.each do |alternative|
-			decisionroom.criterions.each do |criterion|
-				average = Vote.where(alternative_id: alternative.id, criterion_id: criterion.id).average(:value_weighted)
-				Teamoutcome.create_outcome(alternative, criterion, average, decisionroom)
-			end
-		end
-		create_decision_analysis_I
-		after_create
-		
-		if decisionroom.save then
-			redirect_to decisionroom_teamoutcome_index_path(decisionroom_id: decisionroom.id)
-		else
-		end
-	end
-
-	def after_create
-		decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
-
-		decisionroom.alternatives.each do |alternative|
-			sum = Teamoutcome.where(alternative_id: alternative.id, decisionroom_id: decisionroom.id).sum(:average_value)
-			TeamoutcomeSum.create(alternative_id: alternative.id, decisionroom_id: decisionroom.id, outcome_sum: sum)
-		end
-
-		decisionroom.update_attributes(has_outcome: true)
-	end
-
-	def create_decision_analysis_I
-		decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
+		decisionroom = Decisionroom.find(25)
 		array = Array.wrap(nil)
 
 		#SelectRelevantVotes
@@ -96,8 +63,8 @@ class TeamoutcomeController < ApplicationController
 			consensRelation.push([rel[0], rel[1], consens])
 		end
 
-		# maxUser is the maximum user index, which represents the average voting user
-		# Average voting user needs to be excluded to determine the actual groupconsens
+		puts "Consens Relation: ", consensRelation
+
 		maxUser = 0
 		consensRelation.each do |relC|
 			if relC[1] > maxUser then 
@@ -105,7 +72,6 @@ class TeamoutcomeController < ApplicationController
 			end
 		end
 
-		# totalDev = total of deviations of all users
 		totalDev = 0
 		relation.each_with_index do |rel, j|
 			if rel[1] != maxUser then
@@ -113,12 +79,11 @@ class TeamoutcomeController < ApplicationController
 			end
 		end
 
-		#groupconsens is the consens achieved in the hole group
 		groupConsens = 1 - (totalDev / (maxDev.to_f * decisionroom.users.count))
 
-		##################################################################
-		#database import
-		#preparation: transform user_index back to user_ids
+		puts "groupConses: ", groupConsens
+
+		#transform user_index back to user_ids
 		decisionroom.users.each_with_index do |user, i|
 			consensRelation.each do |relC|
 				if i == relC[0] then
@@ -129,18 +94,11 @@ class TeamoutcomeController < ApplicationController
 				end
 			end
 		end
-		#fill FirstDecisionAnalysis Table
+
+		puts "Transformed_consensRelation: ", consensRelation
+
 		consensRelation.each_with_index do |relC, i|
 			if relation[i][1] != maxUser
 				FirstDecisionAnalysis.create(decisionroom.id, relC[0], relC[1], relC[2])
 			end
 		end
-		#fill GroupConsens Table
-		FirstDecisionAnalysisGroupConsen.create(decisionroom.id, groupConsens)
-
-	end
-
-	def index
-		@decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
-	end
-end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180411150222) do
+ActiveRecord::Schema.define(version: 20180519182733) do
 
   create_table "alternatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "decisionroom_id"
@@ -41,6 +41,25 @@ ActiveRecord::Schema.define(version: 20180411150222) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["token"], name: "index_decisionrooms_on_token"
+  end
+
+  create_table "first_decision_analyses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "decisionroom_id"
+    t.integer "usera_id"
+    t.integer "userb_id"
+    t.float "consens", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decisionroom_id"], name: "index_first_decision_analyses_on_decisionroom_id"
+  end
+
+  create_table "first_decision_analysis_group_consens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "decisionroom_id"
+    t.float "group_consens", limit: 24
+    t.float "rank", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decisionroom_id"], name: "index_first_decision_analysis_group_consens_on_decisionroom_id"
   end
 
   create_table "teamoutcome_sums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
