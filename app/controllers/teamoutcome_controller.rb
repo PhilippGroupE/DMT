@@ -129,6 +129,8 @@ class TeamoutcomeController < ApplicationController
 				end
 			end
 		end
+
+		puts "------------------------------------------CONSENSRELATION: ", consensRelation
 		#fill FirstDecisionAnalysis Table
 		consensRelation.each_with_index do |relC, i|
 			if relation[i][1] != maxUser
