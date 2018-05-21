@@ -28,7 +28,12 @@ class UserController < ApplicationController
 		@user = User.create(user_params)
 		@user.has_voted = false
 		@user.decisionroom_id = @decisionroom.id
-		
+		# Set user as creator of the decisionroom, but only given the condition, that no creator 
+		# already exists!
+		if !@decisionroom.creator.present? then
+			Decisionroom.where(id: @decisionroom.id).update_all(creator_id: @user.id)
+		end
+
 		if @user.save
 			log_in(@user)
       		redirect_to decisionroom_path(@decisionroom), notice: "Welcome! Start with the creation process"

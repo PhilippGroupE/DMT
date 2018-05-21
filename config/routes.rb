@@ -18,7 +18,6 @@ Rails.application.routes.draw do
 
       # Teamoutcome Creation
   	  resources :teamoutcome
-      resources :first_decision_analysis
   	end
   	
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

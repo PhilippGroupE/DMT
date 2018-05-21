@@ -7,8 +7,8 @@
 </h2>
 
 <h4>
-	Your team prefers the alternative "<%= @decisionroom.alternatives.find_by(id: TeamoutcomeSum.find_by(outcome_sum: TeamoutcomeSum.where(decisionroom_id: @decisionroom.id).maximum(:outcome_sum)).alternative_id).name %>"
-</h4>
+	Your team prefers the alternative "<%= @decisionroom.alternatives.find_by(id: TeamoutcomeSum.find_by(decisionroom_id: @decisionroom.id, outcome_sum: TeamoutcomeSum.where(decisionroom_id: @decisionroom.id).maximum(:outcome_sum)).alternative_id).name %>!"
+</h4> 
 
 <% @decisionroom.users.each do |user| %>
 <h3> Decisionmaker: <%= User.find(user.id).name %> </h3>
@@ -102,7 +102,48 @@
 		<% end %>
 	</tr>
 </table>
-<%= link_to "Are you aligned with your team members?", decisionroom_first_decision_analysis_index_path(decisionroom_token: @decisionroom.token), class: "button special" %> </br>
+</hr>
+<br />
+<br />
+<p style="text-align: justify;">
+<h3> You are not satisfied with the outcome, yet? <br/> </h3> 
+No problem, for getting a deeper understanding of the outcomes, we have developed some analyses for you!
+<hr />
+<h4>
+	I. The consens analysis	
+</h4> 
+Consens is important in decisions. It may provide you an impression of how your mates feel about the decision outcome. Let's have a look at your votes compared to mates. Keep in mind: the highest consens possible (100%) implies, that you and your mates are completely aligned. On the other hand, a consens of 0 % implies that you are not aligned at all.<br/>
+</p>
+<h4> Consens compared to your team members: </h4>
+<% FirstDecisionAnalysis.where(usera_id: current_user.id).or(FirstDecisionAnalysis.where(userb_id: current_user.id)).order(:consens).each do |fda| %>
+<p>
+	You and your mate 
+	<b>
+	<% if fda.usera_id != current_user.id then %>
+		<%= User.find(fda.usera_id).name %>
+	<% elsif fda.userb_id != current_user.id then %>
+		<%= User.find(fda.userb_id).name %>
+	<% end %>
+	</b> 
+	have reached a consens value of 
+	<b>
+	<% if fda.usera_id != current_user.id then %>
+		<%= (fda.consens * 100).round(2) %> %
+	<% elsif fda.userb_id != current_user.id then %>
+		<%= (fda.consens * 100).round(2) %> %
+	<% end %>
+	</b>.
+</p>
+<% end %>
+<p> 
+<h4> Overall group consens:
+</h4>
+	The overall consens of your group is at 
+	<b>
+	<%= (FirstDecisionAnalysisGroupConsen.find_by(decisionroom_id: @decisionroom.id).group_consens * 100).round(2) %> %
+	</b>. With this value you are more aligned than 
+	<b> <%= @percentage %> % </b> of all other groups, which have used deciVo before.
+</p>
 <%= link_to "Back", decisionroom_path(@decisionroom) %>
 </section>
 </div>

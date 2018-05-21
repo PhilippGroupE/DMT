@@ -1,4 +1,4 @@
-		decisionroom = Decisionroom.find(25)
+		decisionroom = Decisionroom.find(7)
 		array = Array.wrap(nil)
 
 		#SelectRelevantVotes
@@ -63,8 +63,8 @@
 			consensRelation.push([rel[0], rel[1], consens])
 		end
 
-		puts "Consens Relation: ", consensRelation
-
+		# maxUser is the maximum user index, which represents the average voting user
+		# Average voting user needs to be excluded to determine the actual groupconsens
 		maxUser = 0
 		consensRelation.each do |relC|
 			if relC[1] > maxUser then 
@@ -72,18 +72,28 @@
 			end
 		end
 
+		# totalDev = total of deviations of all users
 		totalDev = 0
 		relation.each_with_index do |rel, j|
 			if rel[1] != maxUser then
 				totalDev += absDev[j].sum
 			end
 		end
+		#determine number of unique relations between users
+		numberUniqueRelations = 0.5 * (decisionroom.users.count ** 2 - decisionroom.users.count)
 
-		groupConsens = 1 - (totalDev / (maxDev.to_f * decisionroom.users.count))
+		#groupconsens is the consens achieved in the hole group
+		groupConsens = 1 - (totalDev / (maxDev.to_f * numberUniqueRelations))
 
-		puts "groupConses: ", groupConsens
-
-		#transform user_index back to user_ids
+		puts "-------------------------------------------"
+		puts "uniquerelations:", numberUniqueRelations
+		puts "TOTALDEV:", totalDev
+		puts "MAXDEV:", maxDev
+		puts "USERCOUNT: ", decisionroom.users.count
+		puts "groupconsens: ", groupConsens
+		##################################################################
+		#database import
+		#preparation: transform user_index back to user_ids
 		decisionroom.users.each_with_index do |user, i|
 			consensRelation.each do |relC|
 				if i == relC[0] then
@@ -95,10 +105,5 @@
 			end
 		end
 
-		puts "Transformed_consensRelation: ", consensRelation
 
-		consensRelation.each_with_index do |relC, i|
-			if relation[i][1] != maxUser
-				FirstDecisionAnalysis.create(decisionroom.id, relC[0], relC[1], relC[2])
-			end
-		end
+

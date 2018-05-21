@@ -11,7 +11,7 @@
 	</h2>
 	<p>
 	Your Team prefers the alternative:
-	"<%= @decisionroom.alternatives.find_by(id: TeamoutcomeSum.find_by(outcome_sum: TeamoutcomeSum.where(decisionroom_id: @decisionroom.id).maximum(:outcome_sum)).alternative_id).name %>"! <br />
+	"<%= @decisionroom.alternatives.find_by(id: TeamoutcomeSum.find_by(decisionroom_id: @decisionroom.id, outcome_sum: TeamoutcomeSum.where(decisionroom_id: @decisionroom.id).maximum(:outcome_sum)).alternative_id).name %>"! <br />
 	</p>
 	<%= link_to "See Team Outcome", decisionroom_teamoutcome_index_path(decisionroom_token: @decisionroom.token), class: "button special" %>
 	</header>

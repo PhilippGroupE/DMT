@@ -113,8 +113,11 @@ class TeamoutcomeController < ApplicationController
 			end
 		end
 
+		#determine number of unique relations between users
+		numberUniqueRelations = 0.5 * (decisionroom.users.count ** 2 - decisionroom.users.count)
+
 		#groupconsens is the consens achieved in the hole group
-		groupConsens = 1 - (totalDev / (maxDev.to_f * decisionroom.users.count))
+		groupConsens = 1 - (totalDev / (maxDev.to_f * numberUniqueRelations))
 
 		##################################################################
 		#database import
@@ -130,7 +133,6 @@ class TeamoutcomeController < ApplicationController
 			end
 		end
 
-		puts "------------------------------------------CONSENSRELATION: ", consensRelation
 		#fill FirstDecisionAnalysis Table
 		consensRelation.each_with_index do |relC, i|
 			if relation[i][1] != maxUser
@@ -139,10 +141,13 @@ class TeamoutcomeController < ApplicationController
 		end
 		#fill GroupConsens Table
 		FirstDecisionAnalysisGroupConsen.create(decisionroom.id, groupConsens)
-
+		#Recalculate Ranks
+		FirstDecisionAnalysisGroupConsen.determine_ranks
 	end
 
 	def index
 		@decisionroom = Decisionroom.find_by(token: params[:decisionroom_token])
+		# higher than x percentage of other decision groups
+		@percentage = (1 - (FirstDecisionAnalysisGroupConsen.find_by(decisionroom_id: @decisionroom.id).rank / FirstDecisionAnalysisGroupConsen.all.count.to_f).round(2)) * 100
 	end
 end

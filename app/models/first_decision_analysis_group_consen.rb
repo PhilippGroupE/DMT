@@ -7,16 +7,13 @@ class FirstDecisionAnalysisGroupConsen < ApplicationRecord
 		gc.group_consens = group_consens
 		# this is a placehoder: here should be an analysis which compares,
 		# the group_consens of the focal group to others
-		self.determine_ranks
 		gc.rank = 0
 		gc.save
 	end
 
 	def self.determine_ranks
-		counter = 1
-		FirstDecisionAnalysisGroupConsen.order(:group_consens).each do |consens|
-			consens.rank = counter
-			counter += 1
+		FirstDecisionAnalysisGroupConsen.order(group_consens: :desc).each_with_index do |consens, i|
+			FirstDecisionAnalysisGroupConsen.where(id: consens.id).update_all(rank: (i + 1))
 		end
 	end
 end
