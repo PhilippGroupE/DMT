@@ -26,17 +26,17 @@
 		</td>
 		<% end %>
 	</tr>
-	<% @decisionroom.criterions.each do |criterion| %>
+	<% @decisionroom.criterions.order(:position).each do |criterion| %>
 	<tr>
 		<td>
 			<%= criterion.name %>
 		</td>
 		<td>
-			<%= criterion.weight %>
+			<%= (criterion.weight * 100).round(2)%> %
 		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
 		<td>
-			<%= Vote.find_by(alternative_id: alternative.id, criterion_id: criterion.id, user_id: user.id).value_weighted %>
+			<%= (Vote.find_by(alternative_id: alternative.id, criterion_id: criterion.id, user_id: user.id).value_weighted).round(2) %>
 		</td>
 		<% end %>
 	</tr>
@@ -50,7 +50,7 @@
 		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
 		<td>
-			<%= WeightedSum.find_by(user_id: user.id, alternative_id: alternative.id).value_weighted_sum %>
+			<%= (WeightedSum.find_by(user_id: user.id, alternative_id: alternative.id).value_weighted_sum).round(2) %>
 		</td>
 		<% end %>
 	</tr>
@@ -73,17 +73,17 @@
 		</td>
 		<% end %>
 	</tr>
-	<% @decisionroom.criterions.each do |criterion| %>
+	<% @decisionroom.criterions.order(:position).each do |criterion| %>
 	<tr>
 		<td>
 			<%= criterion.name %>
 		</td>
 		<td>
-			<%= criterion.weight %>
+			<%= (criterion.weight * 100).round(2) %> %
 		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
 		<td>
-			<%= Teamoutcome.find_by(alternative_id: alternative.id, criterion_id: criterion.id).average_value %>
+			<%= (Teamoutcome.find_by(alternative_id: alternative.id, criterion_id: criterion.id).average_value).round(2) %>
 		</td>
 		<% end %>
 	</tr>
@@ -97,7 +97,7 @@
 		</td>
 		<% @decisionroom.alternatives.each do |alternative| %>
 		<td>
-			<%= TeamoutcomeSum.find_by(decisionroom_id: @decisionroom.id, alternative_id: alternative.id).outcome_sum %>
+			<%= (TeamoutcomeSum.find_by(decisionroom_id: @decisionroom.id, alternative_id: alternative.id).outcome_sum).round(2) %>
 		</td>
 		<% end %>
 	</tr>

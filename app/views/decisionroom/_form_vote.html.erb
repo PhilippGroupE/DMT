@@ -18,10 +18,10 @@
 			<% @ary.push(alternative.id) %>
 		<% end %>
 	</tr>
-	<% @decisionroom.criterions.each do |criterion| %>
+	<% @decisionroom.criterions.order(:position).each do |criterion| %>
 	<tr>
 		<td> <%= criterion.name %></td> 
-		<td> <%= criterion.weight %></td>
+		<td> <%= (criterion.weight * 100).round(2) %> % </td>
 		<% $i = 0 %>
 		<%= f.fields_for :votes, [Vote.new]*@ary.count do |vote| %>
 			<%= vote.hidden_field :alternative_id, :value => @ary[$i] %>

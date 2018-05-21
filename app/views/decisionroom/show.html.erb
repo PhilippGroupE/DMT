@@ -61,7 +61,7 @@
 		<td><%= $j %></td>
 		<td><%= criterion.name %></td>
 		<td><%= criterion.description %></td>
-		<td><%= criterion.weight %></td>
+		<td><%= (criterion.weight * 100).round(2) %> %</td>
 	</tr>
 	<% end %>
 </table>
@@ -88,7 +88,7 @@
 			<%= criterion.name %>
 		</td>
 		<td>
-			<%= criterion.weight %>
+			<%= (criterion.weight * 100).round(2) %> %
 		</td>
 		<% @decisionroom.alternatives.each do |alt| %>
 		<td>
@@ -125,12 +125,12 @@
 			<%= criterion.name %>
 		</td>
 		<td>
-			<%= criterion.weight %>
+			<%= (criterion.weight * 100).round(2) %> %
 		</td>
 		<% @decisionroom.alternatives.each do |alt| %>
 		<td>
 			<% if Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id) then %>
-			<%= Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id).value_weighted %>
+			<%= (Vote.find_by(alternative_id: alt.id, criterion_id: criterion.id, user_id: current_user.id).value_weighted).round(2) %>
 			<% else %>
 			<%= "-" %>
 			<% end %>
@@ -150,7 +150,7 @@
 		<% @decisionroom.alternatives.each do |alter| %>
 		<td>
 			<% if WeightedSum.find_by(alternative_id: alter.id, user_id: current_user.id) then %>
-			<%= WeightedSum.find_by(alternative_id: alter.id, user_id: current_user.id).value_weighted_sum %>
+			<%= (WeightedSum.find_by(alternative_id: alter.id, user_id: current_user.id).value_weighted_sum).round(2) %>
 			<% end %>
 		</td>
 		<% end %>
