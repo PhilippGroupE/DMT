@@ -70,12 +70,15 @@
 			if relC[1] > maxUser then 
 				maxUser = relC[1]
 			end
+			if relC[1] == maxUser then
+				relC[1] = nil
+			end
 		end
 
 		# totalDev = total of deviations of all users
 		totalDev = 0
 		relation.each_with_index do |rel, j|
-			if rel[1] != maxUser then
+			if rel[1] != nil then
 				totalDev += absDev[j].sum
 			end
 		end
@@ -105,5 +108,4 @@
 			end
 		end
 
-
-
+		puts consensRelation
