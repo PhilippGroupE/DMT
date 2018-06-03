@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root to: "welcome#index"
+  root to: "decisionroom#new"
   resources :user
   resources :decisionroom, param: :token do
   	  patch :sort
