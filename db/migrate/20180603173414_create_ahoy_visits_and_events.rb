@@ -44,7 +44,7 @@ class CreateAhoyVisitsAndEvents < ActiveRecord::Migration[5.1]
       t.references :user
 
       t.string :name
-      t.json :properties
+      t.string :properties
       t.timestamp :time
     end
 
