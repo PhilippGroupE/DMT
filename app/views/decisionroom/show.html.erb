@@ -185,6 +185,9 @@ The weight represents the importance of the respective criterion. The higher the
 	<%= link_to "Add Decisionmakers", decisionroom_user_add_member_path(decisionroom_token: @decisionroom.token), class: "button special" %> 
 	<br />
 	<%= link_to "See Decisionmakers", decisionroom_user_index_path(decisionroom_token: @decisionroom.token), class: "button special" %> 
+	<br />
+	<br/>
+	<%= link_to "Add your Feedback", new_feedback_path, class: "button" %>
 </div>
 </div>
 <% end %>

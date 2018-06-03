@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   root to: "welcome#index"
   resources :user
+  resources :feedback
   resources :decisionroom, param: :token do
   	  patch :sort
   	  # Decision Creation

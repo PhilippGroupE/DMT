@@ -37,6 +37,7 @@ gem 'cocoon'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'acts_as_list'
+gem 'ahoy_matey'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

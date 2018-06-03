@@ -1,0 +1,26 @@
+<article id="main">
+<section class="wrapper style5">
+<div class="inner">
+<section>
+	<h2 style="text-align: center;">
+		Insert your feedback below
+	</h2>
+	<div title="What did you like about the page? 
+	What do you think we can improve? 
+	Did you like the decision analysis?
+	What dou you think about the design?"><b>Place your mouse here for getting some inspiration </b></div>
+	<br/>
+	Add your feedback here:
+	<%= simple_form_for @feedback, url: {action: "create"} do |f| %>
+	<%= f.input :text, label: false, required: true, as: :text %> <br/>
+	<div style="text-align: center;">
+	<%= f.submit "Send Feedback", as: :text, class: "button special" %>
+	</div>
+	<% end %>
+	<p style="text-align: center;">
+		<%= link_to "Back", :back, class: "button" %>
+	</p>
+</section>
+</div>
+</section>
+</article>
