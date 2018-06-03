@@ -7,15 +7,15 @@
 	</ul>
 </div>
 <% end %>
-<h3> Decision Information </h3>
-<h4> Decision Name </h4>
+<h4> Name of your Decision </h4> (e.g. Trip Planning)
 <%= simple_form_for @decisionroom, url: {action: "create"} do |f| %>
 	<%= f.input :name, label: false %>
-<h4> What is the Decision about? </h4>
+<h4> What is the Decision about? </h4> (e.g. About the trip we want to do during the next summer holiday)
 	<%= f.input :description, label: false, as: :text %>
 <div class="Alternatives">
 <hr />
 	<h4> Add your Alternatives </h4>
+	(e.g. Alternative #1: Bully-Trip or Alternative #2: Hiking-Trip)
 	<% $i = 1 %>
 	<%= f.simple_fields_for :alternatives do |alternative| %>
 		<b> Alternative #<%= $i %> </b>
@@ -29,6 +29,7 @@
 <div class="Criterions">
 <hr />
 	<h4> Add your Criterions </h4>
+	(e.g. Criterion #1: Costs or Criterion #2: Food)
 	<% $i = 1 %>
 	<%= f.simple_fields_for :criterions do |criterion| %>
 		<h5> Criterion #<%= $i %> </h5>
@@ -40,11 +41,13 @@
 		<%= link_to_add_association 'Add', f, :criterions, class: "button" %>
 		</div>
 <hr />
+<p style="text-align: center;">
 		<%= f.submit "Create Decision", :class => "button special" %>
 		<br />
 		or
 		<br />
 		<%= f.submit "Rank Your Criterions!", :class => "button special" %>	
+</p>
 <% end %>
 
 

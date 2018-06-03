@@ -1,10 +1,10 @@
 <article id="main">
 <section class="wrapper style5">
 <div class="inner">
-<section>
+<section style="text-align: center;">
 <h3> Welcome! </h3>
 </br>
-<h4>Before participating on the decision making. Please, check if you are already registered: </h4>
+Before participating on the decision making. Please, check if you are already registered: <br/><br/>
 <table>
 <% @decisionroom.users.each do |decisionmaker| %>
 	<tr>
@@ -17,10 +17,12 @@
 <br/>
 <br/>
 <% if !@decisionroom.has_outcome then %>
-<h4>
-	If you are new to this decision, click below to participate!
-</h4>
+<p>
+If you are new to this decision, click below to participate!
+<br/>
+<br/>
 <%= link_to "Be a new member!", {:controller => "user", :action => "new"},class: "button special" %>
+</p>
 <% end %>
 </section>
 </div>

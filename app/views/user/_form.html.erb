@@ -11,5 +11,7 @@
 <%= simple_form_for @user, url: {action: "create"} do |f| %>
 	<%= f.input :name, label: false, required: true, placeholder: "Your Name" %>
 	<br />
+	<p style="text-align: center;">
 	<%= f.submit "Start!", class: "button special" %>
+	</p>
 	<% end %>

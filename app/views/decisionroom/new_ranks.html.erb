@@ -7,13 +7,12 @@
 <section class="wrapper style5">
 <div class="inner">
 <section>
-<h2>
+<h2 style="text-align: center;">
 What do you think is the most important criterion?
 </h2>
-<h5>
 Sort less important criterions below the top one<br/>
 - by using drag and drop!	
-</h5>
+</br>
 </br>
 <table>
 	<tbody id="criterions" class="list-group" data-url="<%= decisionroom_sort_path %>">
@@ -23,7 +22,9 @@ Sort less important criterions below the top one<br/>
 		<% end %>
 	</tbody>
 </table>
+<p style="text-align: center;">
 	<%= link_to "Be the first Decisionmaker!", new_decisionroom_user_path(@decisionroom), class: "button special" %> 
+	</p>
 </section>
 </article>
 </div>

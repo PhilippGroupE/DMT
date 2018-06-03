@@ -17,7 +17,11 @@ Click here to see whom of the participants voted already:<br />
 <%= link_to "Back", decisionroom_path(token: @decisionroom.token), class: "button" %>
 <% else %>
 
-<h2> Add your Votes</h2>
+<h2 style="text-align: center;"> Add your Votes </h2>
+But be careful, this just can be done once! <br />
+Keep in mind: A score of 5 represents the best, a score of 1 the worst score possible.
+<br />
+<br />
 
 <%= render 'form_vote' %>
 <% end %>

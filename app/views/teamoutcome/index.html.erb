@@ -2,6 +2,7 @@
 <section class="wrapper style5">
 <div class="inner">
 <section>
+<div style="text-align: center;">
 <h2>
 	Team Decision Outcome
 </h2>
@@ -9,7 +10,7 @@
 <h4>
 	Your team prefers the alternative "<%= @decisionroom.alternatives.find_by(id: TeamoutcomeSum.find_by(decisionroom_id: @decisionroom.id, outcome_sum: TeamoutcomeSum.where(decisionroom_id: @decisionroom.id).maximum(:outcome_sum)).alternative_id).name %>!"
 </h4> 
-
+</div>
 <% @decisionroom.users.each do |user| %>
 <h3> Decisionmaker: <%= User.find(user.id).name %> </h3>
 <table>
@@ -105,6 +106,7 @@
 </hr>
 <br />
 <br />
+<hr />
 <p style="text-align: justify;">
 <h3> You are not satisfied with the outcome, yet? <br/> </h3> 
 No problem, for getting a deeper understanding of the outcomes, we have developed some analyses for you!
@@ -145,8 +147,9 @@ Consens is important in decisions. It may provide you an impression of how your 
 	<b> <%= @percentage %> % </b> of all other groups, which have used deciVo before.
 </p>
 <br/>
-<%= link_to "Back", decisionroom_path(@decisionroom) %>
-
+<p style="text-align: center;">
+<%= link_to "Back", :back, class: "button" %>
+</p>
 </section>
 </div>
 </section>

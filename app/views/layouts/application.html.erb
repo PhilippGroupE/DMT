@@ -16,8 +16,9 @@
 
           <header id="header">
           <h1>
-          <%= link_to "decivo", root_path %>
+          <%= link_to image_tag("Decivo_logo.png"), new_decisionroom_path %>
           </h1>
+          
           <% if (params.has_key?(:token) || params.has_key?(:decisionroom_token)) && !current_user.nil? then %>
             <nav id="nav">
               <ul>
@@ -51,7 +52,7 @@
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     
-    <div style="text-align:center">
+    <div style="text-align:left">
     <%= yield %>
     </div>
           <footer id="footer">
