@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20180603173818) do
     t.bigint "visit_id"
     t.bigint "user_id"
     t.string "name"
-    t.json "properties"
+    t.string "properties"
     t.timestamp "time"
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["user_id"], name: "index_ahoy_events_on_user_id"
